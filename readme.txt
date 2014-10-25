@@ -87,8 +87,8 @@ WaterWoo PDF is intended to watermark PDF (.pdf) files. If you are specifically 
 = I get an FPDF error =
 If you get the "FPDF error: This document (../../yourfile.pdf) probably uses a compression technique which is not supported by the free parser shipped with FPDI" it is because the PDF you are trying to watermark uses a compression technique not supported by the bundled PDF generator, FPDI. FPDI parses PDFs through version 1.4, and occasionally has troubles with 1.5, 1.6 and 1.7. 
 
-1. [Try this solution using Acrobat, if possible.](http://stackoverflow.com/a/7155711 "Stack Overflow") Alternatively, you can go to Edit->Preflight->Standards and Save As PDF/A.
-2. [If that doesn't work, test and perhaps purchase the add-on from SetaSign and add it into this plugin.](http://www.setasign.com/products/fpdi/demos/fpdi-pdf-parser/ "PDF Parser Add-On") Or consider buying the Premium version of this plugin, as it will solve this problem.
+1. Try this [solution using Acrobat](http://stackoverflow.com/a/7155711 "Stack Overflow"), if possible. Alternatively, you can go to Edit->Preflight->Standards and Save As PDF/A.
+2. If that doesn't work, test and perhaps purchase the [add-on from SetaSign](http://www.setasign.com/products/fpdi/demos/fpdi-pdf-parser/ "PDF Parser Add-On") and add it into this plugin. That will take some programming chops. Or consider buying the Premium version of this plugin, as it will solve this problem.
 
 = Does this work for ePub/Mobi files =
 No. At this time I am unaware of a Woocommerce watermarking plugin for these file types.
