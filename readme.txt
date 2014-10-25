@@ -11,9 +11,10 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Protect your intellectual property! WaterWoo PDF allows WooCommerce site administrators to apply custom watermarks to PDFs upon sale. 
 
 == Description ==
-WaterWoo PDF is a plugin that adds a watermark to every page of your PDF file(s). The watermark is customizable with font face, font color, font size, placement, and text. Not only that, but since the watermark is added when the download button is clicked (either on the customer's order confirmation page or email), the watermark can include customer-specifc data such as the customer's first name, last name, and email. Your watermark is highly customizable and manipulatable!
+WaterWoo PDF is a plugin that adds a watermark to every page of your PDF file(s). The watermark is customizable with font face, font color, font size, placement, and text. Not only that, but since the watermark is added when the download button is clicked (either on the customer's order confirmation page or email), the watermark can include customer-specific data such as the customer's first name, last name, and email. Your watermark is highly customizable and manipulatable.
 
 **Features:**
+
 * Watermark only designated PDF downloads (as specified by you), or *all* PDF downloads from your site
 * Files do not need to be in a specific directory or even the same domain as your Woocommerce installation
 * Watermark can be moved on the page, allowing for different paper sizes (such as letter, A4, legal, etc)
@@ -33,19 +34,21 @@ WaterWoo PDF is a plugin that adds a watermark to every page of your PDF file(s)
 * Test watermark and/or manually watermark a file on the fly
 
 **Coming soon**
+
 * Begin watermark on selected page of PDF document (to avoid watermarking a cover page, for example)
 * Additional dynamic customer data input (customer address)
 * Watermark with images (transparency)
 * (Got more ideas? Tell me!)
 
-If you have suggestions for a new add-on, feel free to [contact Caroline at Little Package] (mailto:cap@little-package.com "email Caroline").
+If you have suggestions for a new add-on, please get in touch.
 
 **Translations in your language:**
 
-[Get a Premium license in exchange for your translation]
+Get in touch to get a premium license in exchange for your translation. Needed:
 
 * French
 * Spanish
+* German
 
 == Installation ==
 1. Upload the entire "waterwoo-pdf" folder to the "/wp-content/plugins/" directory.
@@ -85,6 +88,7 @@ No. At this time I am unaware of a Woocommerce watermarking plugin for these fil
 
 
 == Screenshots ==
+
 1. Screenshot of the settings page, as a Woocommerce settings tab.
 
 == Remove plugin ==
