@@ -24,7 +24,8 @@ WaterWoo PDF is a plugin that adds a watermark to every page of your PDF file(s)
 * Choice of font face, color, size and placement (horizontal line of text anywhere on the page).
 
 **Premium version:**
-[WaterWoo Premium] (http://cap.little-package.com/shop/waterwoo-pdf-premium "WaterWoo PDF Premium Version") offers these helpful extra features for $45:
+
+[WaterWoo Premium](http://cap.little-package.com/shop/waterwoo-pdf-premium "WaterWoo PDF Premium Version") offers these helpful extra features for $45:
 
 * Rotatable transparent page overlay watermark, apart from footer watermark (two watermark locations!)
 * Additional font faces and text formatting options, such as font color and style (bold, italics)
