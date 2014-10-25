@@ -8,7 +8,7 @@ Stable tag: 1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Protect your intellectual property! WaterWoo PDF allows WooCommerce site administrators to apply custom watermarks to PDFs upon sale. 
+Protect your intellectual property! WaterWoo PDF allows WooCommerce site administrators to apply custom watermarks to PDFs upon sale.
 
 == Description ==
 WaterWoo PDF is a plugin that adds a watermark to every page of your PDF file(s). The watermark is customizable with font face, font color, font size, placement, and text. Not only that, but since the watermark is added when the download button is clicked (either on the customer's order confirmation page or email), the watermark can include customer-specific data such as the customer's first name, last name, and email. Your watermark is highly customizable and manipulatable.
@@ -23,7 +23,7 @@ WaterWoo PDF is a plugin that adds a watermark to every page of your PDF file(s)
 * Dynamic customer data inputs (customer first name, last name, and email)
 * Choice of font face, color, size and placement (horizontal line of text anywhere on the page).
 
-**Premium version:**
+**Premium version (coming soon):**
 
 [WaterWoo Premium](http://cap.little-package.com/shop/waterwoo-pdf-premium "WaterWoo PDF Premium Version") offers these helpful extra features for $45:
 
@@ -34,7 +34,7 @@ WaterWoo PDF is a plugin that adds a watermark to every page of your PDF file(s)
 * Password protect and/or encrypt PDF files
 * Test watermark and/or manually watermark a file on the fly
 
-**Coming soon**
+**Planned Features**
 
 * Begin watermark on selected page of PDF document (to avoid watermarking a cover page, for example)
 * Additional dynamic customer data input (customer address)
@@ -52,11 +52,18 @@ Get in touch to get a premium license in exchange for your translation. Needed:
 * German
 
 == Installation ==
+
+= To install plugin =
 1. Upload the entire "waterwoo-pdf" folder to the "/wp-content/plugins/" directory.
 2. Activate the plugin through the "Plugins" menu in WordPress.
 3. Visit WooCommerce->Settings->Watermark tab to set your plugin preferences.
 4. **Please test your watermarking** by making mock purchases before going live to make sure it works and looks great!
 5.  Note: for this to work you need to have pretty URLs enabled from the WP settings. Otherwise a 404 error will be thrown.
+
+= To remove plugin: =
+
+1. Deactivate plugin through the 'Plugins' menu in WordPress
+2. Delete plugin through the 'Plugins' menu in WordPress
 
 == Frequently Asked Questions ==
 = Where do I change watermark settings? =
@@ -74,15 +81,14 @@ Your watermark text string is too big or long for the page! Try decreasing font 
 = Where do the watermarked files go? =
 They are generated with a unique name and stored in the same folder as your original Wordpress/Woo product media upload (usually wp-content/uploads/year/month/file). The unique name includes the order number and a time stamp. If your end user complains of not being able to access their custom PDF for some reason (most often after their max number of downloads is exceeded), you can find it in that folder, right alongside your original.
 
-
 = Will WaterWoo PDF watermark images? =
 WaterWoo PDF is intended to watermark PDF (.pdf) files. If you are specifically looking to watermark image files (.jpg, .jpeg, .gif, .png, .etc), you may want to look into a plugin such as [Image Watermark](http://wordpress.org/plugins/image-watermark/ "Image Watermark Plugin"). WaterWoo PDF will create an watermark on a PDF page but the watermark will NOT sit over image files embedded in the PDF. 
 
 = I get an FPDF error =
 If you get the "FPDF error: This document (../../yourfile.pdf) probably uses a compression technique which is not supported by the free parser shipped with FPDI" it is because the PDF you are trying to watermark uses a compression technique not supported by the bundled PDF generator, FPDI. FPDI parses PDFs through version 1.4, and occasionally has troubles with 1.5, 1.6 and 1.7. 
 
-1. [Try this solution using Acrobat, if possible.] (http://stackoverflow.com/a/7155711 "Stack Overflow") Alternatively, you can go to Edit->Preflight->Standards and Save As PDF/A.
-2. [If that doesn't work, test and perhaps purchase the add-on from SetaSign and add it into this plugin.] (http://www.setasign.com/products/fpdi/demos/fpdi-pdf-parser/ "PDF Parser Add-On") Or consider buying the Premium version of this plugin, as it will solve this problem.
+1. [Try this solution using Acrobat, if possible.](http://stackoverflow.com/a/7155711 "Stack Overflow") Alternatively, you can go to Edit->Preflight->Standards and Save As PDF/A.
+2. [If that doesn't work, test and perhaps purchase the add-on from SetaSign and add it into this plugin.](http://www.setasign.com/products/fpdi/demos/fpdi-pdf-parser/ "PDF Parser Add-On") Or consider buying the Premium version of this plugin, as it will solve this problem.
 
 = Does this work for ePub/Mobi files =
 No. At this time I am unaware of a Woocommerce watermarking plugin for these file types.
@@ -91,11 +97,6 @@ No. At this time I am unaware of a Woocommerce watermarking plugin for these fil
 == Screenshots ==
 
 1. Screenshot of the settings page, as a Woocommerce settings tab.
-
-== Remove plugin ==
-
-1. Deactivate plugin through the 'Plugins' menu in WordPress
-2. Delete plugin through the 'Plugins' menu in WordPress
 
 == Changelog ==
 = 1.0 =
