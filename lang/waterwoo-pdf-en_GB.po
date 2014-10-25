@@ -1,0 +1,315 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WaterWoo PDF v1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2014-10-23 15:39:12+0000\n"
+"Last-Translator: littlepackage <hi@little-package.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n>1;\n"
+"X-Generator: CSL v1.x\n"
+"X-Poedit-Language: \n"
+"X-Poedit-Country: \n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Textdomain-Support: yes"
+
+#: inc/class_wwpdf_download_product.php:30
+#@ woocommerce
+msgid "Invalid email address."
+msgstr ""
+
+#: inc/class_wwpdf_download_product.php:30
+#: inc/class_wwpdf_download_product.php:55
+#: inc/class_wwpdf_download_product.php:77
+#: inc/class_wwpdf_download_product.php:84
+#: inc/class_wwpdf_download_product.php:89
+#: inc/class_wwpdf_download_product.php:93
+#: inc/class_wwpdf_download_product.php:140
+#: inc/class_wwpdf_download_product.php:257
+#: inc/class_wwpdf_download_product.php:421
+#: inc/class_wwpdf_download_product.php:462
+#@ woocommerce
+msgid "Go to homepage"
+msgstr ""
+
+#: inc/class_wwpdf_download_product.php:55
+#: inc/class_wwpdf_download_product.php:257
+#@ woocommerce
+msgid "Invalid download."
+msgstr ""
+
+#: inc/class_wwpdf_download_product.php:69
+#@ woocommerce
+msgid "You must be logged in to download files."
+msgstr ""
+
+#: inc/class_wwpdf_download_product.php:69
+#@ woocommerce
+msgid "Login"
+msgstr ""
+
+#: inc/class_wwpdf_download_product.php:69
+#@ woocommerce
+msgid "Log in to Download Files"
+msgstr ""
+
+#: inc/class_wwpdf_download_product.php:71
+#@ woocommerce
+msgid "This is not your download link."
+msgstr ""
+
+#: inc/class_wwpdf_download_product.php:77
+#@ woocommerce
+msgid "Product no longer exists."
+msgstr ""
+
+#: inc/class_wwpdf_download_product.php:84
+#@ woocommerce
+msgid "Invalid order."
+msgstr ""
+
+#: inc/class_wwpdf_download_product.php:89
+#@ woocommerce
+msgid "Sorry, you have reached your download limit for this file"
+msgstr ""
+
+#: inc/class_wwpdf_download_product.php:93
+#@ woocommerce
+msgid "Sorry, this download has expired"
+msgstr ""
+
+#: inc/class_wwpdf_download_product.php:140
+#@ woocommerce
+msgid "No file defined"
+msgstr ""
+
+#: inc/class_wwpdf_download_product.php:298
+#@ water-woo-pdf
+msgid "PDF downloads require a first name, last name, and email in the order information. If you have not provided these, contact the site owner to have them added. After they are added to your order, your instant download link will work."
+msgstr ""
+
+#: inc/class_wwpdf_download_product.php:298
+#@ water-woo-pdf
+msgid "Go to homepage &rarr;"
+msgstr ""
+
+#: inc/class_wwpdf_download_product.php:421
+#: inc/class_wwpdf_download_product.php:462
+#@ woocommerce
+msgid "File not found"
+msgstr ""
+
+#: inc/fpdi/pdf_parser.php:412
+#@ default
+msgid "trailer"
+msgstr ""
+
+#. translators: plugin header field 'Name'
+#: waterwoo-pdf.php:0
+#@ waterwoo-pdf
+msgid "WaterWoo PDF"
+msgstr ""
+
+#. translators: plugin header field 'PluginURI'
+#. translators: plugin header field 'AuthorURI'
+#: waterwoo-pdf.php:0
+#@ waterwoo-pdf
+msgid "http://cap.little-package.com/waterwoo-pdf"
+msgstr ""
+
+#. translators: plugin header field 'Description'
+#: waterwoo-pdf.php:0
+#@ waterwoo-pdf
+msgid "Custom watermark your PDFs upon WooCommerce sale"
+msgstr ""
+
+#. translators: plugin header field 'Author'
+#: waterwoo-pdf.php:0
+#@ waterwoo-pdf
+msgid "Caroline Paquette"
+msgstr ""
+
+#. translators: plugin header field 'Version'
+#: waterwoo-pdf.php:0
+#@ waterwoo-pdf
+msgid "1.0"
+msgstr ""
+
+#: waterwoo-pdf.php:187
+#@ waterwoo-pdf
+msgid "Your WooCommerce installation may be incomplete, altered, or damaged. Check it out and try again."
+msgstr ""
+
+#: waterwoo-pdf.php:251
+#@ waterwoo-pdf
+msgid "FAQ"
+msgstr ""
+
+#: waterwoo-pdf.php:252
+#@ waterwoo-pdf
+msgid "Support"
+msgstr ""
+
+#: waterwoo-pdf.php:265
+#@ waterwoo-pdf
+msgid "Go to the settings page"
+msgstr ""
+
+#: waterwoo-pdf.php:265
+#@ waterwoo-pdf
+msgid "Settings"
+msgstr ""
+
+#: waterwoo-pdf.php:341
+#: waterwoo-pdf.php:344
+#@ waterwoo-pdf
+msgid "About the Plugin"
+msgstr ""
+
+#: waterwoo-pdf.php:343
+#@ waterwoo-pdf
+msgid "Plugin: WaterWoo PDF"
+msgstr ""
+
+#: waterwoo-pdf.php:345
+#@ default
+msgid "Protect your intellectual property! WaterWoo PDF allows WooCommerce site administrators to apply custom watermarks to PDFs upon sale."
+msgstr ""
+
+#: waterwoo-pdf.php:346
+#@ waterwoo-pdf
+msgid "WaterWoo PDF is a plugin that adds a watermark to every page of your PDF file(s). The watermark is customizable with font face, font color, font size, placement, and text. Not only that, but since the watermark is added when the download button is clicked (either on the customer's order confirmation page or email), the watermark can include customer-specifc data such as the customer's first name, last name, and email. Your watermark is highly customizable and manipulatable!"
+msgstr ""
+
+#: waterwoo-pdf.php:351
+#@ waterwoo-pdf
+msgid "For more information:"
+msgstr ""
+
+#: waterwoo-pdf.php:352
+#@ waterwoo-pdf
+msgid "Frequently Asked Questions"
+msgstr ""
+
+#: waterwoo-pdf.php:353
+#@ waterwoo-pdf
+msgid "Project on WordPress.org"
+msgstr ""
+
+#: waterwoo-pdf.php:354
+#@ waterwoo-pdf
+msgid "Project on GitHub"
+msgstr ""
+
+#: waterwoo-pdf.php:365
+#@ waterwoo-pdf
+msgid "Upgrade to Premium"
+msgstr ""
+
+#: waterwoo-pdf.php:385
+#@ wwpdf
+msgid "Upgrade to Premium - $45"
+msgstr ""
+
+#: waterwoo-pdf.php:398
+#@ waterwoo-pdf
+msgid "Watermark"
+msgstr ""
+
+#: waterwoo-pdf.php:414
+#@ waterwoo-pdf
+msgid "WaterWoo General Options"
+msgstr ""
+
+#: waterwoo-pdf.php:421
+#@ water_woo_pdf
+msgid "Enable Watermarking"
+msgstr ""
+
+#: waterwoo-pdf.php:422
+#@ waterwoo-pdf
+msgid "Check to enable PDF watermarking."
+msgstr ""
+
+#: waterwoo-pdf.php:429
+#@ waterwoo-pdf
+msgid "File(s) to watermark"
+msgstr ""
+
+#: waterwoo-pdf.php:430
+#@ waterwoo-pdf
+msgid "List file name(s) of PDF(s) to watermark, one per line, e.g., <code>upload.pdf</code> or <code>my_pdf.pdf</code> .<br />If left blank, WaterWoo PDF will watermark all PDFs sold through WooCommerce."
+msgstr ""
+
+#: waterwoo-pdf.php:438
+#@ waterwoo-pdf
+msgid "Custom text for footer watermark"
+msgstr ""
+
+#: waterwoo-pdf.php:439
+#@ waterwoo-pdf
+msgid "Shortcodes available, all caps, in brackets: <code>[FIRSTNAME]</code> <code>[LASTNAME]</code> <code>[EMAIL]</code>"
+msgstr ""
+
+#: waterwoo-pdf.php:447
+#@ waterwoo_pdf
+msgid "Font face"
+msgstr ""
+
+#: waterwoo-pdf.php:448
+#@ waterwoo-pdf
+msgid "Select a font for watermarks."
+msgstr ""
+
+#: waterwoo-pdf.php:453
+#@ waterwoo-pdf
+msgid "Helvetica"
+msgstr ""
+
+#: waterwoo-pdf.php:454
+#@ waterwoo-pdf
+msgid "Times New Roman"
+msgstr ""
+
+#: waterwoo-pdf.php:455
+#@ waterwoo-pdf
+msgid "Courier"
+msgstr ""
+
+#: waterwoo-pdf.php:464
+#@ waterwoo-pdf
+msgid "Font size"
+msgstr ""
+
+#: waterwoo-pdf.php:466
+#@ waterwoo-pdf
+msgid "Provide a number (suggested 10-20) for the footer watermark font size"
+msgstr ""
+
+#: waterwoo-pdf.php:479
+#@ waterwoo-pdf
+msgid "Watermark color"
+msgstr ""
+
+#: waterwoo-pdf.php:480
+#@ waterwoo-pdf
+msgid "Color of the footer watermark. Default <code>#000000</code>."
+msgstr ""
+
+#: waterwoo-pdf.php:491
+#@ waterwoo-pdf
+msgid "Y Fine Tuning"
+msgstr ""
+
+#: waterwoo-pdf.php:492
+#@ waterwoo-pdf
+msgid "Move the footer watermark up and down on the page by adjusting this number. Default 270 (bottom of page)."
+msgstr ""
+
