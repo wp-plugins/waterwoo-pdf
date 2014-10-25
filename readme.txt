@@ -1,7 +1,7 @@
 === WaterWoo PDF Plugin ===
 Contributors: Caroline Paquette
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PB2CFX8H4V49L
-Tags: woocommerce, ecommerce, pdf, file, ebook, watermark, watermarking, copyright, protection, security, plugin
+Tags: woocommerce, ecommerce, pdf, file, ebook, book, watermark, watermarking, copyright, protection, security, plugin, publishing, press, digital, upload, media, signature, marca de agua, property
 Requires at least: 3.7
 Tested up to: 4.1
 Stable tag: 1.0
