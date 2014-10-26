@@ -11,28 +11,20 @@ class WWPDFWatermark {
 
 	public static function apply_and_spit($origfile, $newfile, $wmtext2) {
 
-			$wm = new WWPDFWatermark($origfile, $newfile, $wmtext2);
+		$wm = new WWPDFWatermark($origfile, $newfile, $wmtext2);
 
-			if($wm->is_watermarked()) {
-					return $wm->spit_watermarked();
-			} else {
-					$wm->do_watermark();
-					return $wm->spit_watermarked();
-			}
-	}
-
-	public function hex2rgb($hex) {
-			$hex = str_replace("#", "", $hex);
-	 			$r = hexdec(substr($hex,0,2));
-					$g = hexdec(substr($hex,2,2));
-					$b = hexdec(substr($hex,4,2));
-			$rgb = array($r, $g, $b);
-			return implode(",", $rgb);
+		if($wm->is_watermarked()) {
+			return $wm->spit_watermarked();
+		} else {
+			$wm->do_watermark();
+			return $wm->spit_watermarked();
+		}
+		
 	}
 
 	public function do_watermark() {
-
 		global $wpdb, $woocommerce;
+		
 		$currentFile = $this->file;
 		$newfile = $this->newfile;
 		$pagecount = $this->pdf->setSourceFile($currentFile);
@@ -47,7 +39,6 @@ class WWPDFWatermark {
 		$wwpdf_footer_color = $this->hex2rgb($wpdb->get_var( "SELECT option_value FROM " . $wpdb->prefix . "options WHERE option_name = 'footer_color'"));
 		$rgb_array = explode(",", $wwpdf_footer_color);
 		$this->pdf->SetTextColor($rgb_array[0],$rgb_array[1],$rgb_array[2]);
-
 
 		for( $i = 1; $i <= $pagecount; $i++ ) {
 				$this->pdf->addPage();
@@ -74,6 +65,15 @@ class WWPDFWatermark {
 		return $this->newfile;
 	}
 
+	protected function hex2rgb($hex) {
+		$hex = str_replace("#", "", $hex);
+		$r = hexdec(substr($hex,0,2));
+		$g = hexdec(substr($hex,2,2));
+		$b = hexdec(substr($hex,4,2));
+		$rgb = array($r, $g, $b);
+		return implode(",", $rgb);
+	}
+	
 	protected function _rotate($angle,$x=-1,$y=-1) {
 		if($x==-1)
  			$x=$this->pdf->x;
