@@ -1,10 +1,10 @@
 === WaterWoo PDF Plugin ===
 Contributors: Caroline Paquette
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PB2CFX8H4V49L
-Tags: woocommerce, ecommerce, pdf, file, ebook, book, watermark, watermarking, copyright, protection, security, plugin, publishing, press, digital, upload, media, signature, marca de agua, property
+Tags: book, copyright, digital, ebook, ecommerce, e-commerce, file, marca de agua, pdf, plugin, property, protection, publishing, security, signature, watermark, watermarking, woocommerce
 Requires at least: 3.7
-Tested up to: 4.1
-Stable tag: 1.0
+Tested up to: 4.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -16,7 +16,7 @@ WaterWoo PDF is a plugin that adds a watermark to every page of your PDF file(s)
 **Features:**
 
 * Watermark only designated PDF downloads (as specified by you), or *all* PDF downloads from your site
-* Files do not need to be in a specific directory or even the same domain as your Woocommerce installation
+* Files do not need to be in a specific directory
 * Watermark can be moved on the page, allowing for different paper sizes (such as letter, A4, legal, etc)
 * Watermark is applied to **all** pages of **every** PDF purchased
 * Watermarks upon click of either the customer's order confirmation page link or email order confirmation link
@@ -34,10 +34,10 @@ WaterWoo PDF is a plugin that adds a watermark to every page of your PDF file(s)
 * Password protect and/or encrypt PDF files
 * Test watermark and/or manually watermark a file on the fly
 
-**Planned Features**
+**Planned Premium Features**
 
-* Begin watermark on selected page of PDF document (to avoid watermarking a cover page, for example)
 * Additional dynamic customer data input (customer address)
+* Different watermarks for different files
 * Watermark with images (transparency)
 * (Got more ideas? Tell me!)
 
@@ -47,9 +47,7 @@ If you have suggestions for a new add-on, please get in touch.
 
 Get in touch to get a premium license in exchange for your translation. Needed:
 
-* French
-* Spanish
-* German
+* Your native language
 
 == Installation ==
 
@@ -100,8 +98,13 @@ No. At this time I am unaware of a Woocommerce watermarking plugin for these fil
 
 == Changelog ==
 = 1.0 =
-* Initial release.
+* Initial release
+
+= 1.0.1 =
+* Minor changes, corrections
 
 == Upgrade Notice ==
 = 1.0 =
-* Initial release.
+* Initial release
+= 1.0.1 =
+* Minor changes
