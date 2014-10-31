@@ -97,6 +97,7 @@ No. At this time I am unaware of a Woocommerce watermarking plugin for these fil
 1. Screenshot of the settings page, as a Woocommerce settings tab.
 
 == Changelog ==
+
 = 1.0 =
 * Initial release
 
@@ -104,7 +105,9 @@ No. At this time I am unaware of a Woocommerce watermarking plugin for these fil
 * Minor changes, corrections
 
 == Upgrade Notice ==
+
 = 1.0 =
 * Initial release
+
 = 1.0.1 =
 * Minor changes
