@@ -4,9 +4,9 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: book, copyright, digital, ebook, ecommerce, e-commerce, file, marca de agua, pdf, plugin, property, protection, publishing, security, signature, watermark, watermarking, woocommerce
 Requires at least: 3.7
 Tested up to: 4.0
-Stable tag: 1.0.1
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Stable tag: 1.0.2
+License: GPLv3 or later
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Protect your intellectual property! WaterWoo PDF allows WooCommerce site administrators to apply custom watermarks to PDFs upon sale.
 
@@ -23,19 +23,23 @@ WaterWoo PDF is a plugin that adds a watermark to every page of your PDF file(s)
 * Dynamic customer data inputs (customer first name, last name, and email)
 * Choice of font face, color, size and placement (horizontal line of text anywhere on the page).
 
-**Premium version (coming soon):**
+**Premium version:**
 
 [WaterWoo Premium](http://cap.little-package.com/shop/waterwoo-pdf-premium "WaterWoo PDF Premium Version") offers these helpful extra features for $45:
 
+* Supports all versions of Adobe PDF (through 1.7)
 * Rotatable transparent page overlay watermark, apart from footer watermark (two watermark locations!)
-* Additional font faces and text formatting options, such as font color and style (bold, italics)
+* Additional text formatting options, such as font color and style (bold, italics)
 * Additional dynamic customer data input (telephone number)
 * Begin watermark on selected page of PDF document (to avoid watermarking a cover page, for example)
-* Password protect and/or encrypt PDF files
+* Optionally password protect and/or encrypt PDF files
+* Optionally prevent copying, annotating, or modifying of your PDF files
 * Test watermark and/or manually watermark a file on the fly
+
 
 **Planned Premium Features**
 
+* Additional font faces
 * Additional dynamic customer data input (customer address)
 * Different watermarks for different files
 * Watermark with images (transparency)
@@ -60,8 +64,12 @@ Get in touch to get a premium license in exchange for your translation. Needed:
 
 = To remove plugin: =
 
+
+
 1. Deactivate plugin through the 'Plugins' menu in WordPress
+
 2. Delete plugin through the 'Plugins' menu in WordPress
+
 
 == Frequently Asked Questions ==
 = Where do I change watermark settings? =
@@ -104,6 +112,9 @@ No. At this time I am unaware of a Woocommerce watermarking plugin for these fil
 = 1.0.1 =
 * Minor changes, corrections
 
+= 1.0.2 =
+* Support for landscape orientation
+
 == Upgrade Notice ==
 
 = 1.0 =
@@ -111,3 +122,6 @@ No. At this time I am unaware of a Woocommerce watermarking plugin for these fil
 
 = 1.0.1 =
 * Minor changes
+
+= 1.0.2 =
+* Support for landscape orientation

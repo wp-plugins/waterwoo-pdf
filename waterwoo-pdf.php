@@ -3,24 +3,26 @@
  * Plugin Name: WaterWoo PDF
  * Plugin URI: http://cap.little-package.com/waterwoo-pdf
  * Description: Custom watermark your PDFs upon WooCommerce sale
- * Version: 1.0.1
- * Author: Caroline Paquette
+ * Version: 1.0.2
+ * Author: Caroline Paquette 
  * Author URI: http://cap.little-package.com/waterwoo-pdf
  * Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PB2CFX8H4V49L
  * License: GPLv3 or later
- * License URI: http://www.opensource.org/licenses/gpl-license.php
+ * License URI: http://www.gnu.org/licenses/gpl-3.0.html
  * 
  * Text Domain: waterwoo-pdf
  * Domain path: /lang
  *
  * Copyright 2013-2014 Caroline Paquette 
  *		
- *     This file is part of WaterWoo PDF, a plugin for WordPress.
+ *     This file is part of WaterWoo PDF, a plugin for WordPress. If
+ * 	   it benefits you, consider donating and/or leaving a review at
+ * 	   Wordpress. Thank you.
  *
  *     WaterWoo PDF is free software: You can redistribute
  *     it and/or modify it under the terms of the GNU General Public
  *     License as published by the Free Software Foundation, either
- *     version 2 of the License, or (at your option) any later version.
+ *     version 3 of the License, or (at your option) any later version.
  *     
  *     WaterWoo PDF is distributed in the hope that it will
  *     be useful, but WITHOUT ANY WARRANTY; without even the
@@ -32,13 +34,10 @@
  *
  */
 
-
 if ( ! defined('ABSPATH') ) { exit; }
-
 if ( ! class_exists( 'WaterWooPDF' ) ) :
 
 class WaterWooPDF {
-
 
 	/**
      * @var string
@@ -54,7 +53,7 @@ class WaterWooPDF {
         $wwpdf = new self();
 
     }
-		
+    	
 
 	/**
 	 * Is Woocommerce activated?
@@ -82,6 +81,7 @@ class WaterWooPDF {
 			$this->tab_name = 'waterwoo-pdf';
 
 		}
+		
 	}
 
 	
@@ -123,7 +123,9 @@ class WaterWooPDF {
         if ( function_exists( "spl_autoload_register" ) && ! ( $autoload_is_disabled ) ) {
 
            // >= PHP 5.2 - Use auto loading
+
             if ( function_exists( "__autoload" ) ) {
+
                 spl_autoload_register( "__autoload" ); 
             }
 
@@ -132,9 +134,13 @@ class WaterWooPDF {
         } else {
 
             // < PHP5.2 - Require all classes
+
             foreach ( $this->plugin_classes() as $id => $path ) {
+
                 if ( is_readable( $path ) && ! class_exists( $id ) ) {
+
                     require_once( $path );
+
                 }
 
             }
@@ -147,6 +153,7 @@ class WaterWooPDF {
     /**
      * Autoload classes to reduce memory consumption
      */
+
     public function autoload( $class ) {
 
         $classes = $this->plugin_classes();
@@ -156,6 +163,7 @@ class WaterWooPDF {
         if ( isset( $classes[$class_name] ) && is_readable( $classes[$class_name] ) ) {
 
  			require_once( $classes[$class_name] );
+
         }
 
     }
@@ -178,8 +186,8 @@ class WaterWooPDF {
 
 		if ( class_exists( 'WC_Download_Handler' ) ) {
 
-			remove_action('init', array(WC_Download_Handler, 'download_product'));
-			add_action('init', array(WWPDFDownloadHandler, 'wwpdf_download_product'));
+			remove_action('init', array( 'WC_Download_Handler', 'download_product'));
+			add_action('init', array( 'WWPDFDownloadHandler', 'wwpdf_download_product'));
 
 		}
 
@@ -208,9 +216,9 @@ class WaterWooPDF {
 	*/
 	public function load_localization() {
 
-			load_plugin_textdomain( 'waterwoo-pdf', false, dirname( plugin_basename( __FILE__ ) ) . '/lang/' );	
+		load_plugin_textdomain( 'waterwoo-pdf', false, dirname( plugin_basename( __FILE__ ) ) . '/lang/' );	
 
-		}
+	}
 
 		
 	/**
@@ -229,8 +237,7 @@ class WaterWooPDF {
 			add_action( 'woocommerce_update_options_' . $this->tab_name, array( $this, 'save_settings_page' ) );
 			add_action( 'current_screen', array( $this, 'load_screen_hooks' ) );
 
-			// add 'get premium' link to plugin options
-        	$plugin = plugin_basename( __FILE__ );
+			$plugin = plugin_basename( __FILE__ );
 
         	add_filter( "plugin_action_links_{$plugin}", array( $this, 'upgrade_to_premium_link' ) );
 
@@ -301,6 +308,7 @@ class WaterWooPDF {
 			add_action( 'load-' . $screen->id, array( $this, 'add_help_tabs' ) );
 
 		}
+		
 	}
 
 
@@ -350,12 +358,15 @@ class WaterWooPDF {
 	/**
      * Add settings link on plugin page
      */
+
     public function upgrade_to_premium_link( $links ) {
 
         if ( function_exists( 'is_plugin_active' ) && ! is_plugin_active( 'waterwoo-pdf-premium/waterwoo-pdf-premium.php' ) ) {
-            $links[] = '<a href="http://cap.little-package.com/shop/waterwoo-pdf-premium" target="_blank">' . __( 'Upgrade to Premium', 'waterwoo-pdf' ) . '</a>';
-        }
 
+            $links[] = '<a href="http://cap.little-package.com/shop/waterwoo-pdf-premium" target="_blank">' . __( 'Upgrade to Premium', 'waterwoo-pdf' ) . '</a>';
+
+        }
+        
         return $links;
 
     }
@@ -364,19 +375,21 @@ class WaterWooPDF {
     /**
      * Upgrade CTA
      */
+
     public function get_premium_cta() {
 
         if ( function_exists( 'is_plugin_active' ) && ! is_plugin_active( 'waterwoo-pdf-premium/waterwoo-pdf-premium.php' ) ) {
 
             $link = 'http://cap.little-package.com/shop/waterwoo-pdf-premium';
 
-//            $link .= '?utm_source=lite&amp;utm_medium=nag&amp;utm_campaign=pro';
-
             $getPremium = "<div style='display: none;' id='wwpdf-screen-options-link-wrap'><div id='contextual-help-link-wrap' class='hide-if-no-js screen-meta-toggle'><a target='_blank' class='show-settings' href='{$link}'>WaterWoo PDF v" . WWPDF_VERSION . " - " .
+
                 __( 'Upgrade to Premium - $45', 'waterwoo-pdf' ) .
+
                 "</a></div></div>";
 
             echo $getPremium;
+
         }
 
     }
