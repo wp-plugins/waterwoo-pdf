@@ -54,12 +54,12 @@ class WWPDFWatermark {
 
 				if ( $specs['h'] > $specs['w'] ) {
 					if ( $specs['w'] >= 215 ) {
-						$this->pdf->Text(108 - ($this->pdf->GetStringWidth($this->wmtext2) / 2), $wwpdf_footer_finetune_Y_premium, $this->wmtext2);
+						$this->pdf->Text(108 - ($this->pdf->GetStringWidth($this->wmtext2) / 2), $wwpdf_footer_finetune_Y, $this->wmtext2);
 					} else {
-						$this->pdf->Text(105 - ($this->pdf->GetStringWidth($this->wmtext2) / 2), $wwpdf_footer_finetune_Y_premium, $this->wmtext2);
+						$this->pdf->Text(105 - ($this->pdf->GetStringWidth($this->wmtext2) / 2), $wwpdf_footer_finetune_Y, $this->wmtext2);
 					}
 				} else {
-					$this->pdf->Text(140 - ($this->pdf->GetStringWidth($this->wmtext2) / 2), $wwpdf_footer_finetune_Y_premium, $this->wmtext2);
+					$this->pdf->Text(140 - ($this->pdf->GetStringWidth($this->wmtext2) / 2), $wwpdf_footer_finetune_Y, $this->wmtext2);
 				}
 		
 				$this->pdf->useTemplate($tplidx);
