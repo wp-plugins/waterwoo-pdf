@@ -3,7 +3,7 @@
 class WWPDFWatermark {
 
 	public function __construct($origfile, $newfile, $wmtext2) {
-		$this->pdf = new FPDI();
+		$this->pdf = new FPDI_Protection();
 		$this->file = $origfile;
 		$this->newfile = $newfile;
 		$this->wmtext2 = $wmtext2; 
@@ -12,7 +12,6 @@ class WWPDFWatermark {
 	public static function apply_and_spit($origfile, $newfile, $wmtext2) {
 
 		$wm = new WWPDFWatermark($origfile, $newfile, $wmtext2);
-
 		if($wm->is_watermarked()) {
 			return $wm->spit_watermarked();
 		} else {
