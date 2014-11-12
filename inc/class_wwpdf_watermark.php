@@ -3,10 +3,12 @@
 class WWPDFWatermark {
 
 	public function __construct($origfile, $newfile, $wmtext2) {
+
 		$this->pdf = new FPDI_Protection();
 		$this->file = $origfile;
 		$this->newfile = $newfile;
 		$this->wmtext2 = $wmtext2; 
+
 	}
 
 	public static function apply_and_spit($origfile, $newfile, $wmtext2) {
@@ -40,7 +42,7 @@ class WWPDFWatermark {
 		$this->pdf->SetTextColor($rgb_array[0],$rgb_array[1],$rgb_array[2]);
 
 		for( $i = 1; $i <= $pagecount; $i++ ) {
-				$tplidx = $this->pdf->importPage($x);
+				$tplidx = $this->pdf->importPage($i);
 	    		$specs = $this->pdf->getTemplateSize($tplidx);
  				$this->pdf->addPage($specs['h'] > $specs['w'] ? 'P' : 'L');
 							
