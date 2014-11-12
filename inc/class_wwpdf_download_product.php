@@ -238,6 +238,7 @@ class WWPDFDownloadHandler {
 
 				require_once( 'fpdf/fpdf.php' );
 				require_once( 'fpdi/fpdi.php' );
+				require_once( 'fpdi/fpdi_protection.php' );
 
 				$first_name = "_billing_first_name";      
 				$watermark_first_name = $wpdb->get_row( $wpdb->prepare("
