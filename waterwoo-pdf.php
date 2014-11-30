@@ -3,7 +3,7 @@
  * Plugin Name: WaterWoo PDF
  * Plugin URI: http://cap.little-package.com/waterwoo-pdf
  * Description: Custom watermark your PDFs upon WooCommerce sale
- * Version: 1.0.2
+ * Version: 1.0.3
  * Author: Caroline Paquette 
  * Author URI: http://cap.little-package.com/waterwoo-pdf
  * Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PB2CFX8H4V49L
@@ -16,7 +16,7 @@
  * Copyright 2013-2014 Caroline Paquette 
  *		
  *     This file is part of WaterWoo PDF, a plugin for WordPress. If
- * 	   it benefits you, consider donating and/or leaving a review at
+ * 	   it benefits you, please consider donating and/or leaving a review at
  * 	   Wordpress. Thank you.
  *
  *     WaterWoo PDF is free software: You can redistribute
@@ -42,7 +42,7 @@ class WaterWooPDF {
 	/**
      * @var string
      */
-    public $version = '1.0';
+    public $version = '1.0.3';
 
 
     /**
