@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: book, copyright, digital, ebook, ecommerce, e-commerce, file, marca de agua, pdf, plugin, property, protection, publishing, security, signature, watermark, watermarking, woocommerce
 Requires at least: 3.7
 Tested up to: 4.0
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -47,12 +47,6 @@ WaterWoo PDF is a plugin that adds a watermark to every page of your PDF file(s)
 
 If you have suggestions for a new add-on, please get in touch.
 
-**Translations in your language:**
-
-Get in touch to get a premium license in exchange for your translation. Needed:
-
-* Your native language
-
 == Installation ==
 
 = To install plugin =
@@ -63,8 +57,6 @@ Get in touch to get a premium license in exchange for your translation. Needed:
 5.  Note: for this to work you need to have pretty URLs enabled from the WP settings. Otherwise a 404 error will be thrown.
 
 = To remove plugin: =
-
-
 
 1. Deactivate plugin through the 'Plugins' menu in WordPress
 
@@ -115,6 +107,9 @@ No. At this time I am unaware of a Woocommerce watermarking plugin for these fil
 = 1.0.2 =
 * Support for landscape orientation
 
+= 1.0.3 = 
+* Fixed 4 PHP warnings
+
 == Upgrade Notice ==
 
 = 1.0 =
@@ -125,3 +120,6 @@ No. At this time I am unaware of a Woocommerce watermarking plugin for these fil
 
 = 1.0.2 =
 * Support for landscape orientation
+
+= 1.0.3 =
+* Fixed 4 PHP warnings
