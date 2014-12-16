@@ -62,7 +62,9 @@ class WWPDFWatermark {
 					$this->pdf->Text(140 - ($this->pdf->GetStringWidth($this->wmtext2) / 2), $wwpdf_footer_finetune_Y, $this->wmtext2);
 				}
 		
-				$this->pdf->useTemplate($tplidx);
+				// $this->pdf->useTemplate($tplidx);
+				$this->pdf->useTemplate($tplidx, null, null, $specs['w'], $specs['h'], true);
+				
 			}
 
 		$this->pdf->Output($newfile, 'F');

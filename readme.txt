@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: book, copyright, digital, ebook, ecommerce, e-commerce, file, marca de agua, pdf, plugin, property, protection, publishing, security, signature, watermark, watermarking, woocommerce
 Requires at least: 3.7
 Tested up to: 4.0
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -110,6 +110,10 @@ No. At this time I am unaware of a Woocommerce watermarking plugin for these fil
 = 1.0.3 = 
 * Fixed 4 PHP warnings
 
+= 1.0.4 = 
+* Support for odd-sized PDFs
+* Added warning to free users that there may be a delay preparing the free version to work with the upcoming Woocommerce 2.3 release.
+
 == Upgrade Notice ==
 
 = 1.0 =
@@ -123,3 +127,7 @@ No. At this time I am unaware of a Woocommerce watermarking plugin for these fil
 
 = 1.0.3 =
 * Fixed 4 PHP warnings
+
+= 1.0.4 = 
+* Support for odd-sized PDFs
+* Added warning to free users that there may be a delay preparing the free version to work with the upcoming Woocommerce 2.3 release.
