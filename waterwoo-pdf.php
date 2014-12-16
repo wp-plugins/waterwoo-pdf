@@ -2,8 +2,8 @@
 /*
  * Plugin Name: WaterWoo PDF
  * Plugin URI: http://cap.little-package.com/waterwoo-pdf
- * Description: Custom watermark your PDFs upon WooCommerce sale
- * Version: 1.0.2
+ * Description: Custom watermark your PDFs upon WooCommerce sale. Works with WooCommerce version <2.3 - see settings page for more information.
+ * Version: 1.0.4
  * Author: Caroline Paquette 
  * Author URI: http://cap.little-package.com/waterwoo-pdf
  * Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PB2CFX8H4V49L
@@ -16,7 +16,7 @@
  * Copyright 2013-2014 Caroline Paquette 
  *		
  *     This file is part of WaterWoo PDF, a plugin for WordPress. If
- * 	   it benefits you, consider donating and/or leaving a review at
+ * 	   it benefits you, please consider donating and/or leaving a review at
  * 	   Wordpress. Thank you.
  *
  *     WaterWoo PDF is free software: You can redistribute
@@ -42,7 +42,7 @@ class WaterWooPDF {
 	/**
      * @var string
      */
-    public $version = '1.0';
+    public $version = '1.0.4';
 
 
     /**
@@ -175,6 +175,10 @@ class WaterWooPDF {
 	private function setup_actions() {
 
 		add_action( 'admin_init', array( $this, 'load_admin_hooks' ) );
+
+		add_action( 'admin_init', array( $this, 'nag_ignore' ) );
+
+		add_action( 'admin_notices', array( $this, 'admin_notice' ) );
 
 	}
 
@@ -406,6 +410,40 @@ class WaterWooPDF {
 
 
 	/**
+	 * Display a notice that can be dismissed
+	 */ 
+	public function admin_notice() {
+		global $current_user, $pagenow;
+        $user_id = $current_user->ID;
+        /* Check that the user hasn't already clicked to ignore the message */
+		if ( ! get_user_meta($user_id, 'wwpdf_ignore_notice') ) {
+		
+			$currentscreen = get_current_screen();
+			if ( $pagenow == 'admin.php' && $currentscreen->id == 'woocommerce_page_wc-settings' ) {
+        		echo '<div class="updated"><p>'; 
+        		printf(__('<strong>Attention!</strong> The free WaterWoo plugin will break with the upcoming <a href="http://develop.woothemes.com/woocommerce/tag/woocommerce-2-3/" target="_blank" title="Woocommerce 2.3">WooCommerce 2.3</a> major update.<br />I will make sure the WaterWoo Premium version continues to work. Free version users will have to hang in there with Woo versions <2.3 until I have time to fix it -- <a href="http://cap.little-package.com/shop/pdf-watermark-plugin-waterwoo" title="WaterWood watermark PDF plugin" target="_blank">or you can upgrade</a>.<br />I apologize for the inconvenience. If this plugin has been useful to you, please consider <a href="http://cap.little-package.com/shop/pdf-watermark-plugin-waterwoo" title="WaterWood watermark PDF plugin" target="_blank">upgrading</a> or <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PB2CFX8H4V49L" title="Little Package PayPal" target="_blank">donating</a>. <strong>Thank you</strong> for using WaterWoo!<br /><a href="%1$s">Hide This Notice</a>'), '?page=wc-settings&tab=waterwoo-pdf&nag_ignore=0');
+        		echo "</p></div>";
+			}
+
+		}
+
+	}
+
+
+	/**
+	 * Display a notice that can be dismissed
+	 */ 
+	public function nag_ignore() {
+		global $current_user;
+        $user_id = $current_user->ID;
+        /* If user clicks to ignore the notice, add that to their user meta */
+        if ( isset($_GET['nag_ignore']) && '0' == $_GET['nag_ignore'] ) {
+             add_user_meta($user_id, 'wwpdf_ignore_notice', 'true', true);
+		}
+	}
+
+
+	/**
 	 * Settings array
 	 */
 	public function settings_array() {
@@ -519,6 +557,9 @@ class WaterWooPDF {
 		$this->get_premium_cta();
 
 		$waterwoopdf_settings = $this->settings_array();
+
+		do_action( 'wwpdf_admin_notices' );
+
 		woocommerce_admin_fields( $waterwoopdf_settings );		
 
 	}

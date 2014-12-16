@@ -5,3 +5,10 @@
 
 2014.10.26 - version 1.0.1
 * Minor changes
+
+2014.11.30 - version 1.0.3
+* Fixed four PHP warnings
+
+2014.12.16 - version 1.0.4
+* Support for odd-sized PDFs
+* Added warning to free users that there may be a delay preparing the free version to work with the upcoming Woocommerce 2.3 release.
