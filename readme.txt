@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: book, copyright, digital, ebook, ecommerce, e-commerce, file, marca de agua, pdf, plugin, property, protection, publishing, security, signature, watermark, watermarking, woocommerce
 Requires at least: 3.7
 Tested up to: 4.0
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
