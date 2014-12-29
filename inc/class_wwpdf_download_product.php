@@ -117,14 +117,14 @@ class WWPDFDownloadHandler {
 			$file_path = $_product->get_file_download_path( $download_id );
 
 			// Download it!
-			self::wwpdf_download( $file_path, $product_id, $order_key, $email );
+			self::wwpdf_download( $file_path, $product_id, $order_key, $order_id, $email );
 		}
 	}
 
 	/*
 	 * Download a file - hook into init function.
 	 */
-	private function wwpdf_download( $file_path, $product_id, $order_key, $email ) {
+	private function wwpdf_download( $file_path, $product_id, $order_key, $order_id, $email ) {
 		global $wpdb, $is_IE;
 
 		$file_download_method = apply_filters( 'woocommerce_file_download_method', get_option( 'woocommerce_file_download_method' ), $product_id );
@@ -133,8 +133,11 @@ class WWPDFDownloadHandler {
 			wp_die( __( 'No file defined', 'woocommerce' ) . ' <a href="' . esc_url( home_url() ) . '" class="wc-forward">' . __( 'Go to homepage', 'woocommerce' ) . '</a>', '', array( 'response' => 404 ) );
 		}
 
+		// Is the WaterWoo plugin enabled?
+	 	$wwpdf_enabled = $wpdb->get_var( "SELECT option_value FROM " . $wpdb->prefix . "options WHERE option_name = 'wwpdf_enable'" );
+
 		// Redirect to the file...
-		if ( $file_download_method == "redirect" ) {
+		if ( $file_download_method == "redirect" && $wwpdf_enabled != 'yes' ) {
 			header( 'Location: ' . $file_path );
 			exit;
 		}
@@ -195,39 +198,15 @@ class WWPDFDownloadHandler {
 		// Get extension and type
 		$file_extension = strtolower( substr( strrchr( $file_path, "." ), 1 ) );    
 
-		// WWPDF 
-
-		$query = "
-			SELECT order_id
-			FROM " . $wpdb->prefix . "woocommerce_downloadable_product_permissions
-			WHERE user_email = %s
-			AND order_key = %s
-			AND product_id = %s";
-
-		$args = array(
-			$email,
-			$order_key,
-			$product_id
-		);
-
-		if ( $download_id ) {
-			$query .= " AND download_id = %s";
-			$args[] = $download_id;
-		}
-
-		$download_result = $wpdb->get_row( $wpdb->prepare( $query, $args ) );
-
-		if ( ! $download_result ) {
-			wp_die( __( 'Invalid PDF download.', 'waterwoo-pdf' ) . ' <a href="' . esc_url( home_url() ) . '" class="wc-forward">' . __( 'Go to homepage', 'woocommerce' ) . '</a>', '', array( 'response' => 404 ) );
-		}
-
-		$order_id = $download_result->order_id;
-
-		$wwpdf_enabled = $wpdb->get_var( "SELECT option_value FROM " . $wpdb->prefix . "options WHERE option_name = 'enable_wwpdf'");
+		/*
+		 *
+		 * WaterWoo PDF
+		 *
+		 */
 
 		if ( ( $wwpdf_enabled == "yes" ) && ( $file_extension == "pdf") ) {
 
-			$wwpdf_files = $wpdb->get_var( "SELECT option_value FROM " . $wpdb->prefix . "options WHERE option_name = 'pdf_files'");
+			$wwpdf_files = $wpdb->get_var( "SELECT option_value FROM " . $wpdb->prefix . "options WHERE option_name = 'wwpdf_files'");
 
 			// get files listed by client:
 			$wwpdf_file_list = array_filter( array_map( 'trim', explode( PHP_EOL, $wwpdf_files ) ) );
@@ -236,8 +215,16 @@ class WWPDFDownloadHandler {
 
 			if (in_array($file_req, $wwpdf_file_list) || ($wwpdf_files == ''))  {
 
+				/* 
+ 				 * Include FPDF & FPDI
+				 */
+
+				// FPDF Copyright 2011-2015 Olivier PLATHEY
 				require_once( 'fpdf/fpdf.php' );
+				// FPDI Copyright 2004-2015 Setasign - Jan Slabon
 				require_once( 'fpdi/fpdi.php' );
+				// FPDF_Protection Copyright 2014-2015 Klemen VODOPIVEC, Jan Slabon  
+				require_once( 'fpdi/fpdi_protection.php' );
 
 				$first_name = "_billing_first_name";      
 				$watermark_first_name = $wpdb->get_row( $wpdb->prepare("
@@ -263,14 +250,29 @@ class WWPDFDownloadHandler {
 		
 				$wwpdf_file_path = str_replace( '.pdf', '', $file_path ) . '_' . time() . '_' . $order_key . '.' . $file_extension; // customized file path
 
-				$wwpdf_footer_input = $wpdb->get_var( "SELECT option_value FROM " . $wpdb->prefix . "options WHERE option_name = 'footer_input'");
+				$wwpdf_footer_input = $wpdb->get_var( "SELECT option_value FROM " . $wpdb->prefix . "options WHERE option_name = 'wwpdf_footer_input'");
 
 				$wwpdf_footer_input = preg_replace( array( '/\[FIRSTNAME\]/','/\[LASTNAME\]/','/\[EMAIL\]/' ), array( $first_name, $last_name, $email ), $wwpdf_footer_input );
+
+				$wwpdf_footer_input = iconv('UTF-8', 'windows-1252', html_entity_decode($wwpdf_footer_input));
 
 				WWPDFWatermark::apply_and_spit($file_path, $wwpdf_file_path, $wwpdf_footer_input);
 
 			}
 
+		}
+
+		// WWPDF and Redirect
+		if ( ( ( $wwpdf_enabled == "yes" ) && ( $file_extension == "pdf") ) && (in_array($file_req, $wwpdf_file_list) || ($wwpdf_files == '') ) ) {
+
+			if ( $file_download_method == 'redirect' ) {
+		
+				if ( strpos( $wwpdf_file_path, '/wp-content' ) !== false ) {
+					$wwpdf_file_path = site_url() . strstr($wwpdf_file_path, '/wp-content');
+				}
+				header( 'Location: ' . $wwpdf_file_path );
+				exit;
+			}
 		}
 
 		/* End WWPDF */ 
@@ -327,8 +329,8 @@ class WWPDFDownloadHandler {
 		}
 
 		if ( ( ( $wwpdf_enabled == "yes" ) && ( $file_extension == "pdf") ) && (in_array($file_req, $wwpdf_file_list) || ($wwpdf_files == '') ) ) {
-
 			$filename = basename( $wwpdf_file_path );
+			$file_path = $wwpdf_file_path;
 		} else {
 			$filename = basename( $file_path );
 		}
@@ -345,86 +347,45 @@ class WWPDFDownloadHandler {
 		header( "Content-Disposition: attachment; filename=\"" . $filename . "\";" );
 		header( "Content-Transfer-Encoding: binary" );
 
-		if ( ( ( $wwpdf_enabled == "yes" ) && ( $file_extension == "pdf") ) && (in_array($file_req, $wwpdf_file_list) || ($wwpdf_files == '') ) ) {
 
-			if ( $size = @filesize( $wwpdf_file_path ) ) {
-				header( "Content-Length: " . $size );
+		if ( $size = @filesize( $file_path ) ) {
+			header( "Content-Length: " . $size );
+		}
+
+		if ( $file_download_method == 'xsendfile' ) {
+
+			// Path fix - kudos to Jason Judge
+			if ( getcwd() ) {
+				$file_path = trim( preg_replace( '`^' . str_replace( '\\', '/', getcwd() ) . '`' , '', $file_path ), '/' );
 			}
 
-			if ( $file_download_method == 'xsendfile' ) {
+			header( "Content-Disposition: attachment; filename=\"" . $filename . "\";" );
 
-				// Path fix - kudos to Jason Judge
-				if ( getcwd() ) {
-					$wwpdf_file_path = trim( preg_replace( '`^' . str_replace( '\\', '/', getcwd() ) . '`' , '', $wwpdf_file_path ), '/' );
-				}
+			if ( function_exists( 'apache_get_modules' ) && in_array( 'mod_xsendfile', apache_get_modules() ) ) {
 
-				header( "Content-Disposition: attachment; filename=\"" . $filename . "\";" );
-
-				if ( function_exists( 'apache_get_modules' ) && in_array( 'mod_xsendfile', apache_get_modules() ) ) {
-
-					header("X-Sendfile: $wwpdf_file_path");
-					exit;
-
-				} elseif ( stristr( getenv( 'SERVER_SOFTWARE' ), 'lighttpd' ) ) {
-
-					header( "X-Lighttpd-Sendfile: $wwpdf_file_path" );
+				header("X-Sendfile: $file_path");
 				exit;
 
-				} elseif ( stristr( getenv( 'SERVER_SOFTWARE' ), 'nginx' ) || stristr( getenv( 'SERVER_SOFTWARE' ), 'cherokee' ) ) {
+			} elseif ( stristr( getenv( 'SERVER_SOFTWARE' ), 'lighttpd' ) ) {
 
-					header( "X-Accel-Redirect: /$wwpdf_file_path" );
-					exit;
-				}
+				header( "X-Lighttpd-Sendfile: $file_path" );
+				exit;
+
+			} elseif ( stristr( getenv( 'SERVER_SOFTWARE' ), 'nginx' ) || stristr( getenv( 'SERVER_SOFTWARE' ), 'cherokee' ) ) {
+
+				header( "X-Accel-Redirect: /$file_path" );
+				exit;
 			}
-
-			if ( $remote_file ) {
-				WC_Download_Handler::readfile_chunked( $wwpdf_file_path ) || header( 'Location: ' . $wwpdf_file_path );
-			} else {
-				WC_Download_Handler::readfile_chunked( $wwpdf_file_path ) || wp_die( __( 'File not found', 'woocommerce' ) . ' <a href="' . esc_url( home_url() ) . '" class="wc-forward">' . __( 'Go to homepage', 'woocommerce' ) . '</a>', '', array( 'response' => 404 ) );
-			}
-
-			exit;
-
-		} else {
-
-			if ( $size = @filesize( $file_path ) ) {
-				header( "Content-Length: " . $size );
-			}
-
-			if ( $file_download_method == 'xsendfile' ) {
-
-				// Path fix - kudos to Jason Judge
-				if ( getcwd() ) {
-					$file_path = trim( preg_replace( '`^' . str_replace( '\\', '/', getcwd() ) . '`' , '', $file_path ), '/' );
-				}
-
-				header( "Content-Disposition: attachment; filename=\"" . $filename . "\";" );
-
-				if ( function_exists( 'apache_get_modules' ) && in_array( 'mod_xsendfile', apache_get_modules() ) ) {
-
-					header("X-Sendfile: $file_path");
-					exit;
-
-				} elseif ( stristr( getenv( 'SERVER_SOFTWARE' ), 'lighttpd' ) ) {
-
-					header( "X-Lighttpd-Sendfile: $file_path" );
-					exit;
-
-				} elseif ( stristr( getenv( 'SERVER_SOFTWARE' ), 'nginx' ) || stristr( getenv( 'SERVER_SOFTWARE' ), 'cherokee' ) ) {
-
-					header( "X-Accel-Redirect: /$file_path" );
-					exit;
-				}
-			}
-
-			if ( $remote_file ) {
-				WC_Download_Handler::readfile_chunked( $file_path ) || header( 'Location: ' . $file_path );
-			} else {
-				WC_Download_Handler::readfile_chunked( $file_path ) || wp_die( __( 'File not found', 'woocommerce' ) . ' <a href="' . esc_url( home_url() ) . '" class="wc-forward">' . __( 'Go to homepage', 'woocommerce' ) . '</a>', '', array( 'response' => 404 ) );
-			}
-
-			exit;
 		}
+
+		if ( $remote_file ) {
+			WC_Download_Handler::readfile_chunked( $file_path ) || header( 'Location: ' . $file_path );
+		} else {
+			WC_Download_Handler::readfile_chunked( $file_path ) || wp_die( __( 'File not found', 'woocommerce' ) . ' <a href="' . esc_url( home_url() ) . '" class="wc-forward">' . __( 'Go to homepage', 'woocommerce' ) . '</a>', '', array( 'response' => 404 ) );
+		}
+
+		exit;
+
 	}
 }
 new WWPDFDownloadHandler();
