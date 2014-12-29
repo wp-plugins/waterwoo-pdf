@@ -101,9 +101,6 @@ No. At this time I am unaware of a Woocommerce watermarking plugin for these fil
 = 1.0 =
 * Initial release
 
-= 1.0.1 =
-* Minor changes, corrections
-
 = 1.0.2 =
 * Support for landscape orientation
 
@@ -112,7 +109,12 @@ No. At this time I am unaware of a Woocommerce watermarking plugin for these fil
 
 = 1.0.4 = 
 * Support for odd-sized PDFs
-* Added warning to free users that there may be a delay preparing the free version to work with the upcoming Woocommerce 2.3 release.
+
+= 1.0.5 = 
+* Clean up code in waterwoo-pdf.php class_wwpdf_system_check.php and class_wwpdf_download_product.php
+* UTF font encoding
+* Support for redirect downloads (as long as file is in wp-content folder)
+* Better watermark centering on page
 
 == Upgrade Notice ==
 
@@ -131,3 +133,8 @@ No. At this time I am unaware of a Woocommerce watermarking plugin for these fil
 = 1.0.4 = 
 * Support for odd-sized PDFs
 * Added warning to free users that there may be a delay preparing the free version to work with the upcoming Woocommerce 2.3 release.
+
+= 1.0.5 = 
+* UTF font encoding
+* Support for redirect downloads (as long as file is in wp-content folder)
+* Better watermark centering on page

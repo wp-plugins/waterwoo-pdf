@@ -30,14 +30,14 @@ class WWPDFWatermark {
 		$newfile = $this->newfile;
 		$pagecount = $this->pdf->setSourceFile($currentFile);
 
-		$wwpdf_footer_finetune_Y = $wpdb->get_var( "SELECT option_value FROM " . $wpdb->prefix . "options WHERE option_name = 'footer_finetune_Y'");
+		$wwpdf_footer_finetune_y = $wpdb->get_var( "SELECT option_value FROM " . $wpdb->prefix . "options WHERE option_name = 'wwpdf_footer_y'");
 
 		$wwpdf_font = $wpdb->get_var( "SELECT option_value FROM " . $wpdb->prefix . "options WHERE option_name = 'wwpdf_font'");				
 	
-		$wwpdf_footer_size = $wpdb->get_var( "SELECT option_value FROM " . $wpdb->prefix . "options WHERE option_name = 'footer_size'");
+		$wwpdf_footer_size = $wpdb->get_var( "SELECT option_value FROM " . $wpdb->prefix . "options WHERE option_name = 'wwpdf_footer_size'");
 		$this->pdf->SetFont( $wwpdf_font, '', $wwpdf_footer_size );	
 
-		$wwpdf_footer_color = $this->hex2rgb($wpdb->get_var( "SELECT option_value FROM " . $wpdb->prefix . "options WHERE option_name = 'footer_color'") );
+		$wwpdf_footer_color = $this->hex2rgb($wpdb->get_var( "SELECT option_value FROM " . $wpdb->prefix . "options WHERE option_name = 'wwpdf_footer_color'") );
 		$rgb_array = explode(",", $wwpdf_footer_color);
 		$this->pdf->SetTextColor($rgb_array[0],$rgb_array[1],$rgb_array[2]);
 
@@ -53,16 +53,10 @@ class WWPDFWatermark {
 			//
 
 				if ( $specs['h'] > $specs['w'] ) {
-					if ( $specs['w'] >= 215 ) {
-						$this->pdf->Text(108 - ($this->pdf->GetStringWidth($this->wmtext2) / 2), $wwpdf_footer_finetune_Y, $this->wmtext2);
-					} else {
-						$this->pdf->Text(105 - ($this->pdf->GetStringWidth($this->wmtext2) / 2), $wwpdf_footer_finetune_Y, $this->wmtext2);
-					}
+					$this->pdf->Text( ($specs['w'] / 2) - ($this->pdf->GetStringWidth($this->wmtext2) / 2), $wwpdf_footer_finetune_y, $this->wmtext2);
 				} else {
-					$this->pdf->Text(140 - ($this->pdf->GetStringWidth($this->wmtext2) / 2), $wwpdf_footer_finetune_Y, $this->wmtext2);
+					$this->pdf->Text( ($specs['w'] / 2) - ($this->pdf->GetStringWidth($this->wmtext2) / 2), $wwpdf_footer_finetune_y, $this->wmtext2);
 				}
-		
-				// $this->pdf->useTemplate($tplidx);
 				$this->pdf->useTemplate($tplidx, null, null, $specs['w'], $specs['h'], true);
 				
 			}

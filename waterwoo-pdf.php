@@ -3,7 +3,7 @@
  * Plugin Name: WaterWoo PDF
  * Plugin URI: http://cap.little-package.com/waterwoo-pdf
  * Description: Custom watermark your PDFs upon WooCommerce sale. Works with WooCommerce version <2.3 - see settings page for more information.
- * Version: 1.0.4
+ * Version: 1.0.5
  * Author: Caroline Paquette 
  * Author URI: http://cap.little-package.com/waterwoo-pdf
  * Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PB2CFX8H4V49L
@@ -42,7 +42,7 @@ class WaterWooPDF {
 	/**
      * @var string
      */
-    public $version = '1.0.4';
+    public $version = '1.0.5';
 
 
     /**
@@ -73,12 +73,12 @@ class WaterWooPDF {
 	public function __construct() {
 
 		if ( $this->is_woocommerce_activated() ) {
-				
+	
+			$this->tab_name = 'waterwoo-pdf';			
 			$this->define_constants();
 			$this->includes();
-	        $this->setup_actions();
 			$this->load_wwpdf_hooks();	
-			$this->tab_name = 'waterwoo-pdf';
+
 
 		}
 		
@@ -91,9 +91,7 @@ class WaterWooPDF {
 	private function define_constants() {
 
 		define( 'WWPDF_BASE_URL', trailingslashit( plugins_url( 'waterwoo-pdf' ) ) );
-		define( 'WWPDF_ASSETS_URL', trailingslashit( WWPDF_BASE_URL . 'assets' ) );
 		define( 'WWPDF_PATH', plugin_dir_path( __FILE__ ) );
-		define( 'WWPDF_VERSION_KEY', 'waterwoopdf_version' );
 		define( 'WWPDF_VERSION', $this->version );
 
 	}
@@ -105,7 +103,6 @@ class WaterWooPDF {
     private function plugin_classes() {
 
         return array(
-            'wwpdfsystemcheck'		=> WWPDF_PATH . 'inc/class_wwpdf_system_check.php',
             'wwpdfwatermark'		=> WWPDF_PATH . 'inc/class_wwpdf_watermark.php',
 	        'wwpdfdownloadhandler'	=> WWPDF_PATH . 'inc/class_wwpdf_download_product.php'
 		);
@@ -170,23 +167,13 @@ class WaterWooPDF {
 
 
 	/**
-	 * Load the hooks
-	 */
-	private function setup_actions() {
-
-		add_action( 'admin_init', array( $this, 'load_admin_hooks' ) );
-
-		add_action( 'admin_init', array( $this, 'nag_ignore' ) );
-
-		add_action( 'admin_notices', array( $this, 'admin_notice' ) );
-
-	}
-
-
-	/**
 	 * Remove woocommerce_download_product action hook and replace
 	 */
 	public function load_wwpdf_hooks() {
+
+		add_action( 'admin_init', array( $this, 'load_admin_hooks' ) );
+		add_action( 'admin_init', array( $this, 'nag_ignore' ) );
+		add_action( 'admin_notices', array( $this, 'admin_notice' ) );
 
 		if ( class_exists( 'WC_Download_Handler' ) ) {
 
@@ -200,17 +187,6 @@ class WaterWooPDF {
 			e_( 'Your WooCommerce installation may be incomplete, altered, or damaged. Check it out and try again.', 'waterwoo-pdf' );
 
 		}
-
-	}
-
-
-	/**
-	* Check compatibility of plugin with Wordpress
-	*/
-	public function do_system_check() {
-
-		$systemcheck = new WWPDFSystemCheck();
-		$systemcheck->check();
 
 	}
 
@@ -300,7 +276,7 @@ class WaterWooPDF {
 
 
 	/**
-	 * Add the scripts
+	 * Load screen hooks
 	 */
 	public function load_screen_hooks() {
 
@@ -321,7 +297,7 @@ class WaterWooPDF {
 	 */
 	public function add_scripts() {
 
-		wp_enqueue_script( 'wwpdf-scripts', WWPDF_ASSETS_URL . 'js/wwpdf_admin.js', 'jquery', WWPDF_VERSION );
+		wp_enqueue_script( 'wwpdf-scripts', WWPDF_BASE_URL . '/assets/js/wwpdf_admin.js', 'jquery', WWPDF_VERSION );
 
 	}
 
@@ -353,11 +329,11 @@ class WaterWooPDF {
 		$screen->set_help_sidebar(
 			'<p><strong>' . __( 'For more information:', 'waterwoo-pdf' ) . '</strong></p>'.
 			'<p><a href="http://wordpress.org/extend/plugins/waterwoo-pdf/faq/" target="_blank">' . __( 'More Frequently Asked Questions', 'waterwoo-pdf' ) . '</a></p>' .
-			'<p><a href="http://wordpress.org/extend/plugins/waterwoo-pdf/" target="_blank">' . __( 'Project on WordPress.org', 'waterwoo-pdf' ) . '</a></p>' .
-			'<p><a href="https://github.com/littlepackage/waterwoo-pdf" target="_blank">' . __( 'Project on GitHub', 'waterwoo-pdf' ) . '</a></p>' 
+			'<p><a href="http://wordpress.org/extend/plugins/waterwoo-pdf/" target="_blank">' . __( 'Project on WordPress.org', 'waterwoo-pdf' ) . '</a></p>'
 		);
 
 	}
+
 
 	/**
      * Add settings link on plugin page
@@ -397,6 +373,7 @@ class WaterWooPDF {
         }
 
     }
+
 
 	/**
 	 * Add a tab to the settings page	
@@ -444,42 +421,65 @@ class WaterWooPDF {
 
 
 	/**
+	 * Clean old pre-1.0.5 settings from options table
+	 */
+	private function clean_options_table() {
+
+		delete_site_option( 'enable_wwpdf' );
+		delete_site_option( 'pdf_files' );
+		delete_site_option( 'footer_input' );
+		delete_site_option( 'footer_size' );
+		delete_site_option( 'footer_color' );
+		delete_site_option( 'footer_finetune_Y' );
+		delete_site_option( 'wwpdf_settings' );
+
+	}
+
+
+	/**
 	 * Settings array
 	 */
-	public function settings_array() {
+	private function settings_array() {
+
+		$wwpdf_enable_default = get_site_option( 'enable_wwpdf', 'no' );
+		$wwpdf_files_default = get_site_option( 'pdf_files', sprintf( '', PHP_EOL ) );
+		$wwpdf_footer_input_default = get_site_option( 'footer_input', 'no' );
+		$wwpdf_footer_size_default = get_site_option( 'footer_size', '12' );
+		$wwpdf_footer_color_default = get_site_option( 'footer_color', '#000000' );
+		$wwpdf_footer_y_default = get_site_option( 'footer_finetune_y', '270' );
 	
 		return array(
 
 			array(
-				'id' 		=> 'general_options',
+				'id' 		=> 'wwpdf_general_options',
 				'type' 		=> 'title',
 				'title' 	=> __( 'WaterWoo General Options', 'waterwoo-pdf' ),
 				'desc' 		=> '',
 			),
 	
 			array(	
-				'id' 		=> 'enable_wwpdf',
+				'id' 		=> 'wwpdf_enable',
 				'type' 		=> 'checkbox', 
 				'title' 	=> __( 'Enable Watermarking', 'water_woo_pdf' ), 
 				'desc' 	=> __( 'Check to enable PDF watermarking', 'waterwoo-pdf' ), 
-				'default' 	=> 'no',
+				'default' 	=> '$wwpdf_enable_default',
 			),
 
 			array(
-				'id' 		=> 'pdf_files',
+				'id' 		=> 'wwpdf_files',
 				'type' 		=> 'textarea', 
 				'title' 	=> __( 'File(s) to watermark', 'waterwoo-pdf' ), 
 				'desc' 		=> __( 'List file name(s) of PDF(s) to watermark, one per line, e.g., <code>upload.pdf</code> or <code>my_pdf.pdf</code> .<br />If left blank, WaterWoo PDF will watermark all PDFs sold through WooCommerce.', 'waterwoo-pdf' ), 
-				'default' 	=> sprintf( '', PHP_EOL ),
+				'default' 	=>  $wwpdf_files_default,
 				'css' 		=> 'min-width:600px;',
 			),
 
 			array(
-				'id' 		=> 'footer_input',
+				'id' 		=> 'wwpdf_footer_input',
 				'type'		=> 'textarea',
 				'title' 	=> __( 'Custom text for footer watermark', 'waterwoo-pdf' ),
 				'desc' 		=> __( 'Shortcodes available, all caps, in brackets: <code>[FIRSTNAME]</code> <code>[LASTNAME]</code> <code>[EMAIL]</code>', 'waterwoo-pdf' ),
-				'default' 	=> '',
+				'default' 	=> '$wwpdf_footer_input_default',
 				'css' 		=> 'min-width:600px;',
 			),
 	
@@ -501,12 +501,12 @@ class WaterWooPDF {
 			),
 
 			array(
-				'id' 		=> 'footer_size',
+				'id' 		=> 'wwpdf_footer_size',
 				'type' 		=> 'number',
 				'title' 	=> __( 'Font size', 'waterwoo-pdf' ),
 				'css' 		=> 'width:50px;',
 				'desc' 		=> __( 'Provide a number (suggested 10-20) for the footer watermark font size', 'waterwoo-pdf' ),
-				'default' 	=> '12',
+				'default' 	=> '$wwpdf_footer_size_default',
 				'custom_attributes' => array(
 								'min' 	=> 8,
 								'max' => 22,
@@ -516,23 +516,23 @@ class WaterWooPDF {
 			),
 
 			array(
-				'id' 		=> 'footer_color',
+				'id' 		=> 'wwpdf_footer_color',
 				'type' 		=> 'color',
 				'title' 	=> __( 'Watermark color', 'waterwoo-pdf' ),
 				'desc' 		=> __( 'Color of the footer watermark. Default is black: <code>#000000</code>.', 'waterwoo-pdf' ),
 				'css' 		=> 'width:6em;',
-				'default'	=> '#000000',
+				'default'	=> '$wwpdf_footer_color_default',
 				'desc_tip' 	=> true,
 			),
 
 	
 			array(		
-				'id' 		=> 'footer_finetune_Y',
+				'id' 		=> 'wwpdf_footer_y',
 				'type' 		=> 'number',
 				'css' 		=> 'width:50px;',
 				'title' 	=> __( 'Y Fine Tuning', 'waterwoo-pdf' ),
 				'desc' 	=> __( 'Move the footer watermark up and down on the page by adjusting this number. Default is 270 (bottom of page).', 'waterwoo-pdf' ),
-				'default' 	=> '270',
+				'default' 	=> $wwpdf_footer_y_default,
 				'custom_attributes' => array(
 								'min' 	=> 0,
 								'max' => 1000,
@@ -553,13 +553,9 @@ class WaterWooPDF {
 	 */
 	public function create_settings_page() {
 
-		$this->do_system_check();
 		$this->get_premium_cta();
-
-		$waterwoopdf_settings = $this->settings_array();
-
 		do_action( 'wwpdf_admin_notices' );
-
+		$waterwoopdf_settings = $this->settings_array();
 		woocommerce_admin_fields( $waterwoopdf_settings );		
 
 	}
@@ -574,15 +570,18 @@ class WaterWooPDF {
 
 		if ( is_admin() ) {
 
-			foreach ( $waterwoopdf_settings as $value ) {
-				if ( isset( $value['default'] ) && isset( $value['id'] ) ) {	
-				add_option( 'wwpdf_settings', $waterwoopdf_settings );
-
-				}
+			if ( isset( $waterwoopdf_settings ) ) {
+				woocommerce_update_options( $waterwoopdf_settings );
 			}
 
-			if ( isset( $waterwoopdf_settings ) )
-				woocommerce_update_options( $waterwoopdf_settings );
+			if ( version_compare( WWPDF_VERSION, '1.0.5', '>=') ) {
+				// Test if a old value is in database
+				$wwpdf_check = get_site_option( 'enable_wwpdf', '', false );
+
+				if ( $wwpdf_check != false ) {
+					$this->clean_options_table();
+				}
+			}
 
 		}
 
