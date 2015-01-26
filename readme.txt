@@ -3,8 +3,8 @@ Contributors: littlepackage
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PB2CFX8H4V49L
 Tags: book, copyright, digital, ebook, ecommerce, e-commerce, file, marca de agua, pdf, plugin, property, protection, publishing, security, signature, watermark, watermarking, woocommerce
 Requires at least: 3.7
-Tested up to: 4.0
-Stable tag: 1.0.2
+Tested up to: 4.1
+Stable tag: 1.0.6
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -25,33 +25,17 @@ WaterWoo PDF is a plugin that adds a watermark to every page of your PDF file(s)
 
 **Premium version:**
 
-[WaterWoo Premium](http://cap.little-package.com/shop/waterwoo-pdf-premium "WaterWoo PDF Premium Version") offers these helpful extra features for $45:
+[WaterWoo Premium](http://cap.little-package.com/shop/waterwoo-pdf-premium "WaterWoo PDF Premium Version") offers these helpful extra features:
 
 * Supports all versions of Adobe PDF (through 1.7)
 * Rotatable transparent page overlay watermark, apart from footer watermark (two watermark locations!)
 * Additional text formatting options, such as font color and style (bold, italics)
-* Additional dynamic customer data input (telephone number)
+* Additional font (Deja Vu) adding more international character support
+* Additional dynamic customer data input (telephone number, business name, order paid date)
 * Begin watermark on selected page of PDF document (to avoid watermarking a cover page, for example)
 * Optionally password protect and/or encrypt PDF files
 * Optionally prevent copying, annotating, or modifying of your PDF files
 * Test watermark and/or manually watermark a file on the fly
-
-
-**Planned Premium Features**
-
-* Additional font faces
-* Additional dynamic customer data input (customer address)
-* Different watermarks for different files
-* Watermark with images (transparency)
-* (Got more ideas? Tell me!)
-
-If you have suggestions for a new add-on, please get in touch.
-
-**Translations in your language:**
-
-Get in touch to get a premium license in exchange for your translation. Needed:
-
-* Your native language
 
 == Installation ==
 
@@ -64,8 +48,6 @@ Get in touch to get a premium license in exchange for your translation. Needed:
 
 = To remove plugin: =
 
-
-
 1. Deactivate plugin through the 'Plugins' menu in WordPress
 
 2. Delete plugin through the 'Plugins' menu in WordPress
@@ -76,7 +58,7 @@ Get in touch to get a premium license in exchange for your translation. Needed:
 You can find the WaterWoo settings page by clicking on the "settings" link under the WaterWoo PDF plugin title on your Wordpress plugins panel, or by navigating to the WooCommerce->Settings->Watermark tab.
 
 = It doesn't work =
-First make sure you have checked the box at the top of your settings page (Woocommerce -> Settings -> Watermark) so that watermarking is enabled! Secondly, make sure you have entered your PDF file names correctly in the second field if you've entered any at all. Lastly, WaterWoo may not be able to watermark PDF files version 1.5 and newer. Consider the Premium version of the plugin. 
+First make sure you have checked the box at the top of your settings page (Woocommerce -> Settings -> Watermark) so that watermarking is enabled! Secondly, make sure you have entered your PDF file names correctly in the second field if you've entered any at all. Lastly, WaterWoo may not be able to watermark PDF files version 1.5 and newer. Also, there are no plans to make the free version Woo 2.3-compatible in the near future. Consider the Premium version of the plugin. 
 
 = How do I test my watermark? =
 I recommend creating a coupon in your Woocommerce shop to allow 100% free purchases. Don't share this coupon code with anyone! Test your watermark by purchasing PDFs from your shop using the coupon. It's a bit more tedious. If you want an easier go of it (on-the-fly testing), purchase the Premium version of this plugin.
@@ -109,11 +91,26 @@ No. At this time I am unaware of a Woocommerce watermarking plugin for these fil
 = 1.0 =
 * Initial release
 
-= 1.0.1 =
-* Minor changes, corrections
-
 = 1.0.2 =
 * Support for landscape orientation
+
+= 1.0.3 = 
+* Fixed 4 PHP warnings
+
+= 1.0.4 = 
+* Support for odd-sized PDFs
+
+= 1.0.5 = 
+* Clean up code in waterwoo-pdf.php class_wwpdf_system_check.php and class_wwpdf_download_product.php
+* UTF font encoding
+* Support for redirect downloads (as long as file is in wp-content folder)
+* Better watermark centering on page
+
+= 1.0.6 =
+* Readme updates
+* Implemented woo-includes to determine if Woo is active
+* Fixed link to settings from plugin page
+* Tidy "inc/class_wwpdf_watermark.php"
 
 == Upgrade Notice ==
 
@@ -125,3 +122,15 @@ No. At this time I am unaware of a Woocommerce watermarking plugin for these fil
 
 = 1.0.2 =
 * Support for landscape orientation
+
+= 1.0.3 =
+* Fixed 4 PHP warnings
+
+= 1.0.4 = 
+* Support for odd-sized PDFs
+* Added warning to free users that there may be a delay preparing the free version to work with the upcoming Woocommerce 2.3 release.
+
+= 1.0.5 = 
+* UTF font encoding
+* Support for redirect downloads (as long as file is in wp-content folder)
+* Better watermark centering on page
