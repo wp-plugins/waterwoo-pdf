@@ -541,7 +541,7 @@ class WaterWooPDF {
 				'desc_tip' 	=> true,
 			),
 
-			array( 'id' => 'general_options', 'type' => 'sectionend' ),
+			array( 'id' => 'wwpdf_general_options', 'type' => 'sectionend' ),
 
 		);
 
@@ -592,3 +592,5 @@ class WaterWooPDF {
 endif;
 
 add_action( 'plugins_loaded', array( 'WaterWooPDF', 'init' ), 10 );
+
+?>
