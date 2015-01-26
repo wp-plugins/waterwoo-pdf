@@ -18,3 +18,13 @@
 * UTF font encoding
 * Support for redirect downloads (as long as file is in wp-content folder)
 * Better watermark centering on page
+
+
+2014.1.26 - version 1.0.6
+* Readme updates
+* Implemented woo-includes to determine if Woo is active
+* Fixed link to settings from plugin page
+* Tidy "inc/class_wwpdf_watermark.php"
+
+2014.1.26 - version 1.0.7
+* Fix missing folder issue
