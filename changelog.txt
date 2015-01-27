@@ -28,3 +28,6 @@
 
 2014.1.26 - version 1.0.7
 * Fix missing folder issue
+
+2014.1.27 - version 1.0.8
+* Fix default option variable names
