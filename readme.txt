@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: book, copyright, digital, ebook, ecommerce, e-commerce, file, marca de agua, pdf, plugin, property, protection, publishing, security, signature, watermark, watermarking, woocommerce
 Requires at least: 3.7
 Tested up to: 4.1
-Stable tag: 1.0.6
+Stable tag: 1.0.8
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -111,6 +111,12 @@ No. At this time I am unaware of a Woocommerce watermarking plugin for these fil
 * Implemented woo-includes to determine if Woo is active
 * Fixed link to settings from plugin page
 * Tidy "inc/class_wwpdf_watermark.php"
+
+= 1.0.7 =
+* Missing folder replaced
+
+= 1.0.8 =
+* Fix default option variable names
 
 == Upgrade Notice ==
 

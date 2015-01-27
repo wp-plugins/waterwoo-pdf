@@ -32,7 +32,7 @@ if ( ! class_exists( 'WWPDFWatermark' ) ) :
 
 			$pagecount = $this->pdf->setSourceFile($this->file);
 
-			$wwpdf_footer_finetune_y = $wpdb->get_var( "SELECT option_value FROM " . $wpdb->prefix . "options WHERE option_name = 'wwpdf_footer_y'");
+			$wwpdf_footer_y = $wpdb->get_var( "SELECT option_value FROM " . $wpdb->prefix . "options WHERE option_name = 'wwpdf_footer_y'");
 
 			$wwpdf_font = $wpdb->get_var( "SELECT option_value FROM " . $wpdb->prefix . "options WHERE option_name = 'wwpdf_font'");			
 	
@@ -48,7 +48,7 @@ if ( ! class_exists( 'WWPDFWatermark' ) ) :
 				$specs = $this->pdf->getTemplateSize($tplidx);
 				$this->pdf->addPage($specs['h'] > $specs['w'] ? 'P' : 'L');
 							
-				$this->pdf->Text( ($specs['w'] / 2) - ($this->pdf->GetStringWidth($this->wmtext2) / 2), $wwpdf_footer_finetune_y, $this->wmtext2);
+				$this->pdf->Text( ($specs['w'] / 2) - ($this->pdf->GetStringWidth($this->wmtext2) / 2), $wwpdf_footer_y, $this->wmtext2);
 
 				$this->pdf->useTemplate($tplidx, null, null, $specs['w'], $specs['h'], true);
 				

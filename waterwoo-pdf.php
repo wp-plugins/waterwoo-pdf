@@ -3,7 +3,7 @@
  * Plugin Name: WaterWoo PDF
  * Plugin URI: http://cap.little-package.com/waterwoo-pdf
  * Description: Custom watermark your PDFs upon WooCommerce sale. Works with WooCommerce version <2.3 - see settings page for more information.
- * Version: 1.0.6
+ * Version: 1.0.8
  * Author: Caroline Paquette 
  * Author URI: http://cap.little-package.com/waterwoo-pdf
  * Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PB2CFX8H4V49L
@@ -47,7 +47,7 @@ if ( ! class_exists( 'WaterWooPDF' ) ) :
 		/**
 		 * @var string
 		 */
-		public $version = '1.0.6';
+		public $version = '1.0.8';
 
 		/**
 		 * Init
@@ -145,7 +145,6 @@ if ( ! class_exists( 'WaterWooPDF' ) ) :
 
 			add_action( 'admin_init', array( $this, 'load_admin_hooks' ) );
 			add_action( 'admin_init', array( $this, 'nag_ignore' ) );
-			add_action( 'admin_notices', array( $this, 'admin_notice' ) );
 
 			if ( class_exists( 'WC_Download_Handler' ) ) {
 
@@ -156,7 +155,7 @@ if ( ! class_exists( 'WaterWooPDF' ) ) :
 
 			else { 
 
-				e_( 'Your WooCommerce installation may be incomplete, altered, or damaged. Check it out and try again.', 'waterwoo-pdf' );
+				e_( 'Your WooCommerce installation is missing class WC_Download_Handler.', 'waterwoo-pdf' );
 
 			}
 
@@ -253,6 +252,7 @@ if ( ! class_exists( 'WaterWooPDF' ) ) :
 
 				add_action( 'admin_print_scripts', array( $this, 'add_scripts' ) );
 				add_action( 'load-' . $screen->id, array( $this, 'add_help_tabs' ) );
+				add_action( 'admin_notices', array( $this, 'wwpdf_admin_notices' ) );
 
 			}
 		
@@ -304,7 +304,7 @@ if ( ! class_exists( 'WaterWooPDF' ) ) :
 		}
 
 		/**
-		 * Add CTA link on plugin page
+		 * Add CTA link on plugins page
 		 */
 
 		public function upgrade_to_premium_link( $links ) {
@@ -354,16 +354,15 @@ if ( ! class_exists( 'WaterWooPDF' ) ) :
 		/**
 		 * Display a notice that can be dismissed
 		 */ 
-		public function admin_notice() {
+		public function wwpdf_admin_notices() {
 			global $current_user, $pagenow;
 			$user_id = $current_user->ID;
 			/* Check that the user hasn't already clicked to ignore the message */
 			if ( ! get_user_meta($user_id, 'wwpdf_ignore_notice') ) {
-		
 				$currentscreen = get_current_screen();
 				if ( $pagenow == 'admin.php' && $currentscreen->id == 'woocommerce_page_wc-settings' ) {
 					echo '<div class="updated"><p>'; 
-					printf(__('<strong>Attention!</strong> The free WaterWoo plugin will break with the upcoming <a href="http://develop.woothemes.com/woocommerce/tag/woocommerce-2-3/" target="_blank" title="Woocommerce 2.3">WooCommerce 2.3</a> major update.<br />I will make sure the WaterWoo Premium version continues to work. Free version users will have to hang in there with Woo versions <2.3 until I have time to fix it -- <a href="http://cap.little-package.com/shop/pdf-watermark-plugin-waterwoo" title="WaterWood watermark PDF plugin" target="_blank">or you can upgrade</a>.<br />I apologize for the inconvenience. If this plugin has been useful to you, please consider <a href="http://cap.little-package.com/shop/pdf-watermark-plugin-waterwoo" title="WaterWood watermark PDF plugin" target="_blank">upgrading</a> or <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PB2CFX8H4V49L" title="Little Package PayPal" target="_blank">donating</a>. <strong>Thank you</strong> for using WaterWoo!<br /><a href="%1$s">Hide This Notice</a>'), '?page=wc-settings&tab=waterwoo-pdf&nag_ignore=0');
+					printf(__('<strong>Attention!</strong> The free WaterWoo plugin will break with the upcoming <a href="http://develop.woothemes.com/woocommerce/tag/woocommerce-2-3/" target="_blank" title="Woocommerce 2.3">WooCommerce 2.3</a> major update.<br />I will make sure the WaterWoo Premium version continues to work. Free version users will have to hang in there with Woo versions <2.3 until I have time to fix it.<br />I apologize for the inconvenience. If this plugin has been useful to you, please consider <a href="http://cap.little-package.com/shop/pdf-watermark-plugin-waterwoo" title="WaterWood watermark PDF plugin" target="_blank">upgrading</a> or <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PB2CFX8H4V49L" title="Little Package PayPal" target="_blank">donating</a>. <strong>Thank you</strong> for using WaterWoo!<br /><br /><a href="%1$s">Hide This Notice</a>'), '?page=wc-settings&tab=waterwoo-pdf&nag_ignore=0');
 					echo "</p></div>";
 				}
 
@@ -403,12 +402,12 @@ if ( ! class_exists( 'WaterWooPDF' ) ) :
 		 */
 		private function settings_array() {
 
-			$wwpdf_enable_default = get_site_option( 'enable_wwpdf', 'no' );
-			$wwpdf_files_default = get_site_option( 'pdf_files', sprintf( '', PHP_EOL ) );
-			$wwpdf_footer_input_default = get_site_option( 'footer_input', 'no' );
-			$wwpdf_footer_size_default = get_site_option( 'footer_size', '12' );
-			$wwpdf_footer_color_default = get_site_option( 'footer_color', '#000000' );
-			$wwpdf_footer_y_default = get_site_option( 'footer_finetune_y', '270' );
+			$wwpdf_enable_default = get_site_option( 'wwpdf_enable', 'no' );
+			$wwpdf_files_default = get_site_option( 'wwpdf_files', sprintf( '', PHP_EOL ) );
+			$wwpdf_footer_input_default = get_site_option( 'wwpdf_footer_input', 'Licensed to [FIRSTNAME] [LASTNAME], [EMAIL]' );
+			$wwpdf_footer_size_default = get_site_option( 'wwpdf_footer_size', '12' );
+			$wwpdf_footer_color_default = get_site_option( 'wwpdf_footer_color', '#000000' );
+			$wwpdf_footer_y_default = get_site_option( 'wwpdf_footer_y', '270' );
 	
 			return array(
 
@@ -424,7 +423,7 @@ if ( ! class_exists( 'WaterWooPDF' ) ) :
 					'type' 		=> 'checkbox', 
 					'title' 	=> __( 'Enable Watermarking', 'water_woo_pdf' ), 
 					'desc' 	=> __( 'Check to enable PDF watermarking', 'waterwoo-pdf' ), 
-					'default' 	=> '$wwpdf_enable_default',
+					'default' 	=> $wwpdf_enable_default,
 				),
 
 				array(
@@ -441,7 +440,7 @@ if ( ! class_exists( 'WaterWooPDF' ) ) :
 					'type'		=> 'textarea',
 					'title' 	=> __( 'Custom text for footer watermark', 'waterwoo-pdf' ),
 					'desc' 		=> __( 'Shortcodes available, all caps, in brackets: <code>[FIRSTNAME]</code> <code>[LASTNAME]</code> <code>[EMAIL]</code>', 'waterwoo-pdf' ),
-					'default' 	=> '$wwpdf_footer_input_default',
+					'default' 	=> $wwpdf_footer_input_default,
 					'css' 		=> 'min-width:600px;',
 				),
 	
@@ -468,7 +467,7 @@ if ( ! class_exists( 'WaterWooPDF' ) ) :
 					'title' 	=> __( 'Font size', 'waterwoo-pdf' ),
 					'css' 		=> 'width:50px;',
 					'desc' 		=> __( 'Provide a number (suggested 10-20) for the footer watermark font size', 'waterwoo-pdf' ),
-					'default' 	=> '$wwpdf_footer_size_default',
+					'default' 	=> $wwpdf_footer_size_default,
 					'custom_attributes' => array(
 									'min' 	=> 8,
 									'max' => 22,
@@ -483,7 +482,7 @@ if ( ! class_exists( 'WaterWooPDF' ) ) :
 					'title' 	=> __( 'Watermark color', 'waterwoo-pdf' ),
 					'desc' 		=> __( 'Color of the footer watermark. Default is black: <code>#000000</code>.', 'waterwoo-pdf' ),
 					'css' 		=> 'width:6em;',
-					'default'	=> '$wwpdf_footer_color_default',
+					'default'	=> $wwpdf_footer_color_default,
 					'desc_tip' 	=> true,
 				),
 
@@ -515,7 +514,7 @@ if ( ! class_exists( 'WaterWooPDF' ) ) :
 		public function create_settings_page() {
 
 			$this->get_premium_cta();
-			do_action( 'wwpdf_admin_notices' );
+
 			$waterwoopdf_settings = $this->settings_array();
 			woocommerce_admin_fields( $waterwoopdf_settings );		
 
