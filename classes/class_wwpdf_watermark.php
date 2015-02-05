@@ -28,18 +28,17 @@ if ( ! class_exists( 'WWPDFWatermark' ) ) :
 		}
 
 		public function do_watermark() {
-			global $wpdb, $woocommerce;
 
 			$pagecount = $this->pdf->setSourceFile($this->file);
 
-			$wwpdf_footer_y = $wpdb->get_var( "SELECT option_value FROM " . $wpdb->prefix . "options WHERE option_name = 'wwpdf_footer_y'");
+			$wwpdf_footer_y = get_option( 'wwpdf_footer_y' );
 
-			$wwpdf_font = $wpdb->get_var( "SELECT option_value FROM " . $wpdb->prefix . "options WHERE option_name = 'wwpdf_font'");			
+			$wwpdf_font = get_option( 'wwpdf_font' );			
 	
-			$wwpdf_footer_size = $wpdb->get_var( "SELECT option_value FROM " . $wpdb->prefix . "options WHERE option_name = 'wwpdf_footer_size'");
+			$wwpdf_footer_size = get_option( 'wwpdf_footer_size' );
 			$this->pdf->SetFont( $wwpdf_font, '', $wwpdf_footer_size );	
 
-			$wwpdf_footer_color = $this->hex2rgb($wpdb->get_var( "SELECT option_value FROM " . $wpdb->prefix . "options WHERE option_name = 'wwpdf_footer_color'") );
+			$wwpdf_footer_color = $this->hex2rgb( get_option( 'wwpdf_footer_color' ) );
 			$rgb_array = explode(",", $wwpdf_footer_color);
 			$this->pdf->SetTextColor($rgb_array[0],$rgb_array[1],$rgb_array[2]);
 
