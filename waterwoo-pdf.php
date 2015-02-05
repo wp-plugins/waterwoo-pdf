@@ -357,7 +357,7 @@ if ( ! class_exists( 'WaterWooPDF' ) ) :
 				$currentscreen = get_current_screen();
 				if ( $pagenow == 'admin.php' && $currentscreen->id == 'woocommerce_page_wc-settings' ) {
 					echo '<div class="updated"><p>'; 
-					printf(__('<strong>Yay!</strong> WaterWoo is now WooCommerce 2.3-ready and has a couple new features!<br />But there\'s a little problem. WaterWoo has downloaded well over 500 times, but has only <a href="https://wordpress.org/support/view/plugin-reviews/waterwoo-pdf?filter=5">four (5-star) ratings</a>, and <em>not a single donation</em>.<br />My friends, <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PB2CFX8H4V49L">please make a small donation</a> or a submit review to help keep me going.<br /><strong>Thank you</strong> for using WaterWoo!<br /><br /><a href="%1$s">Hide This Notice</a>'), '?page=wc-settings&tab=waterwoo-pdf&nag_ignore=0');
+					printf(__('<strong>Yay!</strong> WaterWoo is now WooCommerce 2.3-ready and has a couple new features!<br />WaterWoo has downloaded well over 500 times, but sadly has only <a href="https://wordpress.org/support/view/plugin-reviews/waterwoo-pdf?filter=5">four (5-star) ratings</a>, and <em>not a single donation</em>.<br />My friends, <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PB2CFX8H4V49L">please make a small donation</a> or submit a review to help keep me going.<br /><strong>Thank you</strong> for using WaterWoo!<br /><br /><a href="%1$s">Hide This Notice</a>'), '?page=wc-settings&tab=waterwoo-pdf&nag_ignore=0');
 					echo "</p></div>";
 				}
 

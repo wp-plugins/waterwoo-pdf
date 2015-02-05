@@ -49,7 +49,6 @@ WaterWoo PDF is a plugin that adds a watermark to every page of your sold PDF fi
 = To remove plugin: =
 
 1. Deactivate plugin through the 'Plugins' menu in WordPress
-
 2. Delete plugin through the 'Plugins' menu in WordPress
 
 
