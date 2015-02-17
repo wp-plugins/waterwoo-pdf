@@ -2,16 +2,16 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'WWPDFDownloadHandler' ) ) :
+if ( ! class_exists( 'WWPDF_DownloadHandler' ) ) :
 
-	class WWPDFDownloadHandler {
+	class WWPDF_DownloadHandler {
 
 		/**
 		 * Constructor
 		 */
-		public static function init() {
+		public function __construct() {
 		
-			add_action( 'init', array( __CLASS__, 'wwpdf_download_product' ) );
+			add_action( 'init', array( $this, 'wwpdf_download_product' ) );
 						
 		}
 
@@ -240,10 +240,6 @@ if ( ! class_exists( 'WWPDFDownloadHandler' ) ) :
 						;", $order_id, $last_name) );
 					$last_name = $watermark_last_name->meta_value;
 
-					if ( (!$first_name) || (!$last_name) || (!$email) ) {
-						wp_die( __('PDF downloads require a first name, last name, and email in the order information. If you have not provided these, contact the site owner to have them added. After they are added to your order, your instant download link will work.', 'water-woo-pdf') . ' <a href="'.home_url().'">' . __('Go to homepage &rarr;', 'water-woo-pdf') . '</a>' );
-					}
-
 					$phone = "_billing_phone";			
 					$watermark_phone = $wpdb->get_row( $wpdb->prepare("
 						SELECT meta_value
@@ -252,6 +248,18 @@ if ( ! class_exists( 'WWPDFDownloadHandler' ) ) :
 						AND meta_key = %s
 						;", $order_id, $phone) );
 					$phone = $watermark_phone->meta_value;
+
+					$order_paid_date = "_paid_date";			
+					$watermark_order_paid_date = $wpdb->get_row( $wpdb->prepare("
+						SELECT meta_value
+						FROM ".$wpdb->prefix."postmeta
+						WHERE post_id = %s
+						AND meta_key = %s
+						;", $order_id, $order_paid_date) );
+					$order_paid_date = $watermark_order_paid_date->meta_value;
+				
+					// change time from SQL format: 2015-01-10 13:31:12
+					$order_paid_date = date("j M Y", strtotime($order_paid_date) );
 
 					/* 
 					 * Include FPDF & FPDI
@@ -269,7 +277,7 @@ if ( ! class_exists( 'WWPDFDownloadHandler' ) ) :
 
 					$wwpdf_footer_input = get_option( 'wwpdf_footer_input' );
 
-					$wwpdf_footer_input = preg_replace( array( '/\[FIRSTNAME\]/','/\[LASTNAME\]/','/\[EMAIL\]/','/\[PHONE\]/' ), array( $first_name, $last_name, $email, $phone ), $wwpdf_footer_input );
+					$wwpdf_footer_input = preg_replace( array( '/\[FIRSTNAME\]/','/\[LASTNAME\]/','/\[EMAIL\]/','/\[PHONE\]/','/\[DATE\]/' ), array( $first_name, $last_name, $email, $phone, $order_paid_date ), $wwpdf_footer_input );
 
 					$wwpdf_footer_input = iconv('UTF-8', 'windows-1252', html_entity_decode($wwpdf_footer_input));
 

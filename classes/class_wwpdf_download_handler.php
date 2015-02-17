@@ -17,10 +17,10 @@ if ( ! class_exists( 'WWPDF_Download_Handler' ) ) :
 		remove_action( 'woocommerce_download_file_redirect', array( 'WC_Download_Handler', 'download_file_redirect' ) );
 		add_action( 'woocommerce_download_file_redirect', array( __CLASS__, 'download_file_redirect' ), 10, 2 );
 
-		remove_action( 'woocommerce_download_file_xsendfile', array( WC_Download_Handler, 'download_file_xsendfile' ), 10, 2 );
+		remove_action( 'woocommerce_download_file_xsendfile', array( 'WC_Download_Handler', 'download_file_xsendfile' ), 10, 2 );
 		add_action( 'woocommerce_download_file_xsendfile', array( __CLASS__, 'download_file_xsendfile' ), 10, 2 );
 
-		remove_action( 'woocommerce_download_file_force', array( WC_Download_Handler, 'download_file_force' ), 10, 2 );
+		remove_action( 'woocommerce_download_file_force', array( 'WC_Download_Handler', 'download_file_force' ), 10, 2 );
 		add_action( 'woocommerce_download_file_force', array( __CLASS__, 'download_file_force' ), 10, 2 );
 	}
 		/**
@@ -63,17 +63,17 @@ if ( ! class_exists( 'WWPDF_Download_Handler' ) ) :
 					if ( in_array( $file_req, $wwpdf_file_list ) || $wwpdf_files == '' ) { 
 			
 						$wwpdf_file_path = self::wwpdf_watermark_setup( $download_data->user_email, $download_data->order_key, $download_data->product_id, $download_data->user_id, $download_data->download_id, $download_data->order_id, $_product->get_file_download_path( $download_data->download_id ), $file_extension );
-						WC_Download_Handler::download( $wwpdf_file_path, $download_data->product_id );
+						self::download( $wwpdf_file_path, $download_data->product_id );
 					
 					} else {
 					
-						WC_Download_Handler::download( $_product->get_file_download_path( $download_data->download_id ), $download_data->product_id );
+						self::download( $_product->get_file_download_path( $download_data->download_id ), $download_data->product_id );
 					
 					}
 					
 				} else {
 				
-					WC_Download_Handler::download( $_product->get_file_download_path( $download_data->download_id ), $download_data->product_id );
+					self::download( $_product->get_file_download_path( $download_data->download_id ), $download_data->product_id );
 
 				}
 				
@@ -158,10 +158,10 @@ if ( ! class_exists( 'WWPDF_Download_Handler' ) ) :
 			if ( $download_data->user_id && 'yes' === get_option( 'woocommerce_downloads_require_login' ) ) {
 				if ( ! is_user_logged_in() ) {
 					if ( wc_get_page_id( 'myaccount' ) ) {
-						wp_safe_redirect( add_query_arg( 'wc_error', urlencode( __( 'You must be logged in to download files.', 'woocommerce' ) ), get_permalink( wc_get_page_id( 'myaccount' ) ) ) );
+						wp_safe_redirect( add_query_arg( 'wc_error', urlencode( __( 'You must be logged in to download files.', 'woocommerce' ) ), wc_get_page_permalink( 'myaccount' ) ) );
 						exit;
 					} else {
-						self::download_error( __( 'You must be logged in to download files.', 'woocommerce' ) . ' <a href="' . esc_url( wp_login_url( get_permalink( wc_get_page_id( 'myaccount' ) ) ) ) . '" class="wc-forward">' . __( 'Login', 'woocommerce' ) . '</a>', __( 'Log in to Download Files', 'woocommerce' ), 403 );
+						self::download_error( __( 'You must be logged in to download files.', 'woocommerce' ) . ' <a href="' . esc_url( wp_login_url( wc_get_page_permalink( 'myaccount' ) ) ) . '" class="wc-forward">' . __( 'Login', 'woocommerce' ) . '</a>', __( 'Log in to Download Files', 'woocommerce' ), 403 );
 					}
 				} elseif ( ! current_user_can( 'download_file', $download_data ) ) {
 					self::download_error( __( 'This is not your download link.', 'woocommerce' ), '', 403 );
@@ -202,8 +202,6 @@ if ( ! class_exists( 'WWPDF_Download_Handler' ) ) :
 			}
 
 			$filename = basename( $file_path );
-
-
 			if ( strstr( $filename, '?' ) ) {
 				$filename = current( explode( '?', $filename ) );
 			}
@@ -212,7 +210,7 @@ if ( ! class_exists( 'WWPDF_Download_Handler' ) ) :
 			$file_download_method = apply_filters( 'woocommerce_file_download_method', get_option( 'woocommerce_file_download_method', 'force' ), $product_id );
 
 			// Add action to prevent issues in IE
-			add_action( 'nocache_headers', array( WC_Download_Handler, 'ie_nocache_headers_fix' ) );
+			add_action( 'nocache_headers', array( 'WC_Download_Handler', 'ie_nocache_headers_fix' ) );
 
 			// Trigger download via one of the methods
 			do_action( 'woocommerce_download_file_' . $file_download_method, $file_path, $filename );
@@ -224,7 +222,15 @@ if ( ! class_exists( 'WWPDF_Download_Handler' ) ) :
 		 * @param  string $filename
 		 */
 		public static function download_file_redirect( $file_path, $filename = '' ) {
-		
+	
+
+			$file_extension = strtolower( substr( strrchr( $file_path, "." ), 1 ) );
+			$wwpdf_enabled = get_option ( 'wwpdf_enable' );
+
+			$file_req = basename( $file_path );
+			$wwpdf_files = get_option( 'wwpdf_files' );
+			$wwpdf_file_list = array_filter( array_map( 'trim', explode( PHP_EOL, $wwpdf_files ) ) );
+	
 			// Redirect to the file... if not watermarked
 			if ( $file_download_method == "redirect" && $wwpdf_enabled != "yes" ) {
 				header( 'Location: ' . $file_path );
@@ -391,7 +397,7 @@ if ( ! class_exists( 'WWPDF_Download_Handler' ) ) :
 		/**
 		 * Returns file_path, either altered/stamped or not
 		 */
-		public static function wwpdf_watermark_setup( $user_email, $order_key, $product_id, $user_id, $download_id, $order_id, $file_path, $file_extension) {
+		public static function wwpdf_watermark_setup( $user_email, $order_key, $product_id, $user_id, $download_id, $order_id, $file_path, $file_extension ) {
 			global $wpdb;
 
 			$wp_uploads     = wp_upload_dir();
@@ -439,10 +445,6 @@ if ( ! class_exists( 'WWPDF_Download_Handler' ) ) :
 				AND meta_key = %s
 			;", $order_id, $last_name) );
 			$last_name = $watermark_last_name->meta_value;
-			
-			if ( (! $first_name) || (! $last_name) || (! $user_email) ) {
-				wp_die( __('PDF downloads require a first name, last name, and email in the order information.<br />If you have not provided these, contact the site owner to have them added. After they are added to your order, your instant download link will work.', 'water-woo-pdf') . ' <a href="'.home_url().'">' . __('Go to homepage &rarr;', 'water-woo-pdf') . '</a>' );
-			}
 
 			$phone = "_billing_phone";			
 			$watermark_phone = $wpdb->get_row( $wpdb->prepare("
@@ -452,6 +454,18 @@ if ( ! class_exists( 'WWPDF_Download_Handler' ) ) :
 				AND meta_key = %s
 				;", $order_id, $phone) );
 			$phone = $watermark_phone->meta_value;
+
+			$order_paid_date = "_paid_date";			
+			$watermark_order_paid_date = $wpdb->get_row( $wpdb->prepare("
+				SELECT meta_value
+				FROM ".$wpdb->prefix."postmeta
+				WHERE post_id = %s
+				AND meta_key = %s
+				;", $order_id, $order_paid_date) );
+			$order_paid_date = $watermark_order_paid_date->meta_value;
+				
+			// change time from SQL format: 2015-01-10 13:31:12
+			$order_paid_date = date("j M Y", strtotime($order_paid_date) );
 
 			/* 
 			 * Include FPDF & FPDI
@@ -468,7 +482,7 @@ if ( ! class_exists( 'WWPDF_Download_Handler' ) ) :
 
 			$wwpdf_footer_input = get_option( 'wwpdf_footer_input' );
 
-			$wwpdf_footer_input = preg_replace( array( '/\[FIRSTNAME\]/','/\[LASTNAME\]/','/\[EMAIL\]/','/\[PHONE\]/' ), array( $first_name, $last_name, $user_email, $phone ), $wwpdf_footer_input );
+			$wwpdf_footer_input = preg_replace( array( '/\[FIRSTNAME\]/','/\[LASTNAME\]/','/\[EMAIL\]/','/\[PHONE\]/','/\[DATE\]/' ), array( $first_name, $last_name, $user_email, $phone, $order_paid_date ), $wwpdf_footer_input );
 
 			$wwpdf_footer_input = iconv('UTF-8', 'windows-1252', html_entity_decode($wwpdf_footer_input) );
 

@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: book, copyright, digital, ebook, ecommerce, e-commerce, file, marca de agua, pdf, plugin, property, protection, publishing, security, signature, watermark, watermarking, woocommerce
 Requires at least: 3.7
 Tested up to: 4.1
-Stable tag: 1.0.9
+Stable tag: 1.0.10
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -20,7 +20,7 @@ WaterWoo PDF is a plugin that adds a watermark to every page of your sold PDF fi
 * Super customizable placement: watermark can be moved all over the page, allowing for different paper sizes (such as letter, A4, legal, etc)
 * Watermark is applied to **all** pages of **every** PDF purchased
 * Watermarks upon click of either the customer's order confirmation page link or email order confirmation link
-* Dynamic customer data inputs (customer first name, last name, email, and phone)
+* Dynamic customer data inputs (customer first name, last name, email, order paid date, and phone)
 * Choice of font face, color, size and placement (horizontal line of text anywhere on the page).
 
 **Premium version:**
@@ -49,6 +49,7 @@ WaterWoo PDF is a plugin that adds a watermark to every page of your sold PDF fi
 = To remove plugin: =
 
 1. Deactivate plugin through the 'Plugins' menu in WordPress
+
 2. Delete plugin through the 'Plugins' menu in WordPress
 
 
@@ -122,6 +123,10 @@ No. At this time I am unaware of a Woocommerce watermarking plugin for these fil
 * added phone number shortcode
 * tidied folder structure
 
+= 1.0.10 = 
+* WC 2.3.4 update
+* added order paid date shortcode: [DATE]
+
 == Upgrade Notice ==
 
 = 1.0 =
@@ -148,3 +153,6 @@ No. At this time I am unaware of a Woocommerce watermarking plugin for these fil
 = 1.0.9 = 
 * WC 2.3 ready
 * added phone number shortcode
+
+= 1.0.10 = 
+* added order paid date shortcode: [DATE]

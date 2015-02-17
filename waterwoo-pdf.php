@@ -3,7 +3,7 @@
  * Plugin Name: WaterWoo PDF
  * Plugin URI: https://wordpress.org/plugins/waterwoo-pdf/
  * Description: Custom watermark your PDFs upon WooCommerce sale. 
- * Version: 1.0.9
+ * Version: 1.0.10
  * Author: Caroline Paquette 
  * Author URI: http://cap.little-package.com/waterwoo-pdf
  * Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PB2CFX8H4V49L
@@ -49,7 +49,7 @@ if ( ! class_exists( 'WaterWooPDF' ) ) :
 		/**
 		 * @var string
 		 */
-		public $version = '1.0.9';
+		public $version = '1.0.10';
 
 		/**
 		 * Init
@@ -81,7 +81,7 @@ if ( ! class_exists( 'WaterWooPDF' ) ) :
 
 			return array(
 				'wwpdfwatermark'			=> WWPDF_PATH . 'classes/class_wwpdf_watermark.php',
-				'wwpdfdownloadhandler'		=> WWPDF_PATH . 'classes/class_wwpdfdownloadhandler.php',
+				'wwpdf_downloadhandler'		=> WWPDF_PATH . 'classes/class_wwpdf_downloadhandler.php',
 				'wwpdf_download_handler'	=> WWPDF_PATH . 'classes/class_wwpdf_download_handler.php'
 			);
 
@@ -144,7 +144,7 @@ if ( ! class_exists( 'WaterWooPDF' ) ) :
 					remove_action( 'init', array( 'WC_Download_Handler', 'download_product') );
 
 					if ( version_compare( get_woocommerce_version(), '2.2.99', '<=') ) {
-						WWPDFDownloadHandler::init();
+						new WWPDF_DownloadHandler();
 					} else {
 						WWPDF_Download_Handler::init();
 					}
@@ -353,11 +353,11 @@ if ( ! class_exists( 'WaterWooPDF' ) ) :
 			global $current_user, $pagenow;
 			$user_id = $current_user->ID;
 			/* Check that the user hasn't already clicked to ignore the message */
-			if ( ! get_user_meta($user_id, 'wwpdf_ignore_notice2') ) {
+			if ( ! get_user_meta($user_id, 'wwpdf_ignore_notice3') ) {
 				$currentscreen = get_current_screen();
 				if ( $pagenow == 'admin.php' && $currentscreen->id == 'woocommerce_page_wc-settings' ) {
 					echo '<div class="updated"><p>'; 
-					printf(__('<strong>Yay!</strong> WaterWoo is now WooCommerce 2.3-ready and has a couple new features!<br />WaterWoo has downloaded well over 500 times, but sadly has only <a href="https://wordpress.org/support/view/plugin-reviews/waterwoo-pdf?filter=5">four (5-star) ratings</a>, and <em>not a single donation</em>.<br />My friends, <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PB2CFX8H4V49L">please make a small donation</a> or submit a review to help keep me going.<br /><strong>Thank you</strong> for using WaterWoo!<br /><br /><a href="%1$s">Hide This Notice</a>'), '?page=wc-settings&tab=waterwoo-pdf&nag_ignore=0');
+					printf(__('<strong>Yay!</strong> WaterWoo is now WooCommerce 2.3-ready and has a couple new features!<br />WaterWoo has downloaded well over 600 times, but it has only <a href="https://wordpress.org/support/view/plugin-reviews/waterwoo-pdf?filter=5">five (5-star) ratings</a>, and <em>not a single donation</em>.<br />My friends, <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PB2CFX8H4V49L">please make a small donation</a> or a submit review to help keep me going.<br /><strong>Thank you</strong> for using WaterWoo!<br /><br /><a href="%1$s">Hide This Notice</a>'), '?page=wc-settings&tab=waterwoo-pdf&nag_ignore=0');
 					echo "</p></div>";
 				}
 
@@ -374,7 +374,8 @@ if ( ! class_exists( 'WaterWooPDF' ) ) :
 			/* If user clicks to ignore the notice, add that to their user meta */
 			if ( isset($_GET['nag_ignore']) && '0' == $_GET['nag_ignore'] ) {
 				delete_user_meta($user_id, 'wwpdf_ignore_notice', 'true', true);
-				add_user_meta($user_id, 'wwpdf_ignore_notice2', 'true', true);
+				delete_user_meta($user_id, 'wwpdf_ignore_notice2', 'true', true);
+				add_user_meta($user_id, 'wwpdf_ignore_notice3', 'true', true);
 			}
 		}
 
@@ -435,7 +436,7 @@ if ( ! class_exists( 'WaterWooPDF' ) ) :
 					'id' 		=> 'wwpdf_footer_input',
 					'type'		=> 'textarea',
 					'title' 	=> __( 'Custom text for footer watermark', 'waterwoo-pdf' ),
-					'desc' 		=> __( 'Shortcodes available, all caps, in brackets: <code>[FIRSTNAME]</code> <code>[LASTNAME]</code> <code>[EMAIL]</code> <code>[PHONE]</code>', 'waterwoo-pdf' ),
+					'desc' 		=> __( 'Shortcodes available, all caps, in brackets: <code>[FIRSTNAME]</code> <code>[LASTNAME]</code> <code>[EMAIL]</code> <code>[PHONE]</code> <code>[DATE]</code>', 'waterwoo-pdf' ),
 					'default' 	=> $wwpdf_footer_input_default,
 					'css' 		=> 'min-width:600px;',
 				),
