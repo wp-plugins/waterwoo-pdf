@@ -9,7 +9,7 @@ class WC_Dependencies {
 
 	private static $active_plugins;
 
-	public function init() {
+	public static function init() {
 
 		self::$active_plugins = (array) get_option( 'active_plugins', array() );
 
@@ -17,7 +17,7 @@ class WC_Dependencies {
 			self::$active_plugins = array_merge( self::$active_plugins, get_site_option( 'active_sitewide_plugins', array() ) );
 	}
 
-	public function woocommerce_active_check() {
+	public static function woocommerce_active_check() {
 
 		if ( ! self::$active_plugins ) self::init();
 
@@ -28,7 +28,7 @@ class WC_Dependencies {
 	/**
 	* Get current Woo version
 	*/
-	public function get_woo_version_number() {
+	public static function get_woo_version_number() {
        	 // If get_plugins() isn't available, require it
 		if ( ! function_exists( 'get_plugins' ) ) require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 	
