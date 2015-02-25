@@ -20,14 +20,29 @@
 * Better watermark centering on page
 
 
-2014.1.26 - version 1.0.6
+2015.1.26 - version 1.0.6
 * Readme updates
 * Implemented woo-includes to determine if Woo is active
 * Fixed link to settings from plugin page
 * Tidy "inc/class_wwpdf_watermark.php"
 
-2014.1.26 - version 1.0.7
+2015.1.26 - version 1.0.7
 * Fix missing folder issue
 
-2014.1.27 - version 1.0.8
+2015.1.27 - version 1.0.8
 * Fix default option variable names
+
+2015.2.5 - version 1.0.9
+* WC 2.3 ready
+* added phone number shortcode
+* tidied folder structure
+
+2015.2.17 - version 1.0.10
+* WC 2.3.4 update
+* added order date shortcode: [DATE]
+
+2015.2.24 - 1.0.11 
+* fix to woo-includes / Woo Dependencies
+
+2015.2.25 - 1.0.12
+* further fix to woo-includes / Woo Dependencies
