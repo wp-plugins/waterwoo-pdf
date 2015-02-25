@@ -43,3 +43,6 @@
 
 2015.2.24 - 1.0.11 
 * fix to woo-includes / Woo Dependencies
+
+2015.2.25 - 1.0.12
+* further fix to woo-includes / Woo Dependencies

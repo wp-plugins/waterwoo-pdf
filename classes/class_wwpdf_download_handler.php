@@ -202,6 +202,7 @@ if ( ! class_exists( 'WWPDF_Download_Handler' ) ) :
 			}
 
 			$filename = basename( $file_path );
+			
 			if ( strstr( $filename, '?' ) ) {
 				$filename = current( explode( '?', $filename ) );
 			}
@@ -236,7 +237,6 @@ if ( ! class_exists( 'WWPDF_Download_Handler' ) ) :
 				header( 'Location: ' . $file_path );
 				exit;
 			} else if ( ( $wwpdf_enabled == "yes" && $file_extension == "pdf" ) && ( in_array( $file_req, $wwpdf_file_list ) || $wwpdf_files == '' ) ) {
-
 				if ( strpos( $file_path, '/wp-content' ) !== false ) {
 					$file_path = site_url() . strstr( $file_path, '/wp-content' );
 				}
@@ -475,7 +475,7 @@ if ( ! class_exists( 'WWPDF_Download_Handler' ) ) :
 			require_once WWPDF_PATH . 'inc/fpdf/fpdf.php';
 			// FPDI Copyright 2004-2015 Setasign - Jan Slabon
 			require_once WWPDF_PATH . 'inc/fpdi/fpdi.php';
-			// FPDF_Protection Copyright 2014-2015 Klemen VODOPIVEC, Jan Slabon  
+			// FPDI_Protection Copyright 2014-2015 Klemen VODOPIVEC, Jan Slabon  
 			require_once WWPDF_PATH . 'inc/fpdi/fpdi_protection.php';
 
 			$wwpdf_file_path = str_replace( '.pdf', '', $file_path ) . '_' . time() . '_' . $order_key . '.' . $file_extension;

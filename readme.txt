@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: book, copyright, digital, ebook, ecommerce, e-commerce, file, marca de agua, pdf, plugin, property, protection, publishing, security, signature, watermark, watermarking, woocommerce
 Requires at least: 3.7
 Tested up to: 4.1
-Stable tag: 1.0.11
+Stable tag: 1.0.12
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -29,7 +29,7 @@ WaterWoo PDF is a plugin that adds a watermark to every page of your sold PDF fi
 
 * Watermark all PDF files with same settings OR set individual watermarks per product or even per product variation!
 * Supports all versions of Adobe PDF (through 1.7)
-* Rotatable transparent page overlay watermark, apart from footer watermark (two watermark locations!)
+* Rotatable transparent page overlay watermark, apart from footer watermark (two watermark locations on the page)
 * Additional text formatting options, such as font color and style (bold, italics)
 * Additional font (Deja Vu) adding more international character support
 * Additional dynamic customer data input (business name, order paid date)
@@ -160,3 +160,6 @@ No. At this time I am unaware of a Woocommerce watermarking plugin for these fil
 
 = 1.0.11 = 
 * fix to woo-includes / Woo Dependencies
+
+= 1.0.12 = 
+* further fix to woo-includes / Woo Dependencies
