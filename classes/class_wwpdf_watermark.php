@@ -6,18 +6,18 @@ if ( ! class_exists( 'WWPDFWatermark' ) ) :
 
 	class WWPDFWatermark {
 
-		public function __construct($origfile, $newfile, $wmtext2) {
+		public function __construct($origfile, $newfile, $footer) {
 
-			$this->pdf = new FPDI_Protection();
+			$this->pdf = new FPDI();
 			$this->file = $origfile;
 			$this->newfile = $newfile;
-			$this->wmtext2 = $wmtext2; 
+			$this->footer = $footer; 
 
 		}
 
-		public static function apply_and_spit($origfile, $newfile, $wmtext2) {
+		public static function apply_and_spit($origfile, $newfile, $footer) {
 
-			$wm = new WWPDFWatermark($origfile, $newfile, $wmtext2);
+			$wm = new WWPDFWatermark($origfile, $newfile, $footer);
 			if($wm->is_watermarked()) {
 				return $wm->spit_watermarked();
 			} else {
@@ -30,25 +30,20 @@ if ( ! class_exists( 'WWPDFWatermark' ) ) :
 		public function do_watermark() {
 
 			$pagecount = $this->pdf->setSourceFile($this->file);
-
-			$wwpdf_footer_y = get_option( 'wwpdf_footer_y' );
-
-			$wwpdf_font = get_option( 'wwpdf_font' );			
-	
-			$wwpdf_footer_size = get_option( 'wwpdf_footer_size' );
-			$this->pdf->SetFont( $wwpdf_font, '', $wwpdf_footer_size );	
-
-			$wwpdf_footer_color = $this->hex2rgb( get_option( 'wwpdf_footer_color' ) );
-			$rgb_array = explode(",", $wwpdf_footer_color);
+			$footer_y = get_option( 'wwpdf_footer_y' );
+			$font = get_option( 'wwpdf_font' );			
+			$footer_size = get_option( 'wwpdf_footer_size' );
+			$this->pdf->SetFont( $font, '', $footer_size );	
+			$footer_color = $this->hex2rgb( get_option( 'wwpdf_footer_color' ) );
+			$rgb_array = explode(",", $footer_color);
 			$this->pdf->SetTextColor($rgb_array[0],$rgb_array[1],$rgb_array[2]);
 
 			for( $i = 1; $i <= $pagecount; $i++ ) {
+			
 				$tplidx = $this->pdf->importPage($i);
 				$specs = $this->pdf->getTemplateSize($tplidx);
 				$this->pdf->addPage($specs['h'] > $specs['w'] ? 'P' : 'L');
-							
-				$this->pdf->Text( ($specs['w'] / 2) - ($this->pdf->GetStringWidth($this->wmtext2) / 2), $wwpdf_footer_y, $this->wmtext2);
-
+				$this->pdf->Text( ($specs['w'] / 2) - ($this->pdf->GetStringWidth($this->footer) / 2), $footer_y, $this->footer);
 				$this->pdf->useTemplate($tplidx, null, null, $specs['w'], $specs['h'], true);
 				
 			}

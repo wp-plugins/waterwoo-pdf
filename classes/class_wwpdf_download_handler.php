@@ -463,30 +463,25 @@ if ( ! class_exists( 'WWPDF_Download_Handler' ) ) :
 				AND meta_key = %s
 				;", $order_id, $order_paid_date) );
 			$order_paid_date = $watermark_order_paid_date->meta_value;
-				
 			// change time from SQL format: 2015-01-10 13:31:12
 			$order_paid_date = date("j M Y", strtotime($order_paid_date) );
 
 			/* 
-			 * Include FPDF & FPDI
-			 */
+			// Include FPDF & FPDI
+			*/
 
 			// FPDF Copyright 2011-2015 Olivier PLATHEY
 			require_once WWPDF_PATH . 'inc/fpdf/fpdf.php';
 			// FPDI Copyright 2004-2015 Setasign - Jan Slabon
 			require_once WWPDF_PATH . 'inc/fpdi/fpdi.php';
-			// FPDI_Protection Copyright 2014-2015 Klemen VODOPIVEC, Jan Slabon  
-			require_once WWPDF_PATH . 'inc/fpdi/fpdi_protection.php';
-
+			
 			$wwpdf_file_path = str_replace( '.pdf', '', $file_path ) . '_' . time() . '_' . $order_key . '.' . $file_extension;
 
-			$wwpdf_footer_input = get_option( 'wwpdf_footer_input' );
+			$footer_input = get_option( 'wwpdf_footer_input' );
+			$footer_input = preg_replace( array( '/\[FIRSTNAME\]/','/\[LASTNAME\]/','/\[EMAIL\]/','/\[PHONE\]/','/\[DATE\]/' ), array( $first_name, $last_name, $user_email, $phone, $order_paid_date ), $footer_input );
+			$footer_input = iconv('UTF-8', 'windows-1252', html_entity_decode($footer_input) );
 
-			$wwpdf_footer_input = preg_replace( array( '/\[FIRSTNAME\]/','/\[LASTNAME\]/','/\[EMAIL\]/','/\[PHONE\]/','/\[DATE\]/' ), array( $first_name, $last_name, $user_email, $phone, $order_paid_date ), $wwpdf_footer_input );
-
-			$wwpdf_footer_input = iconv('UTF-8', 'windows-1252', html_entity_decode($wwpdf_footer_input) );
-
-			return WWPDFWatermark::apply_and_spit($file_path, $wwpdf_file_path, $wwpdf_footer_input );
+			return WWPDFWatermark::apply_and_spit($file_path, $wwpdf_file_path, $footer_input );
 		
 		}
 	}
