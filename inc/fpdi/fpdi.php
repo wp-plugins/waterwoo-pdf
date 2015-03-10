@@ -22,8 +22,7 @@ require_once('fpdf_tpl.php');
 /**
  * Class FPDI
  */
-class FPDI extends FPDF_TPL
-{
+class FPDI extends FPDF_TPL {
     /**
      * FPDI version
      *
