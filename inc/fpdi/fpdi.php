@@ -95,8 +95,7 @@ class FPDI extends FPDF_TPL {
      * @param string $filename A valid path to the PDF document from which pages should be imported from
      * @return int The number of pages in the document
      */
-    public function setSourceFile($filename)
-    {
+    public function setSourceFile($filename) {
         $_filename = realpath($filename);
         if (false !== $_filename)
             $filename = $_filename;
@@ -121,8 +120,7 @@ class FPDI extends FPDF_TPL {
      * @param string $filename
      * @return fpdi_pdf_parser
      */
-    protected function _getPdfParser($filename)
-    {
+    protected function _getPdfParser($filename) {
         require_once('fpdi_pdf_parser.php');
     	return new fpdi_pdf_parser($filename);
     }
@@ -132,8 +130,7 @@ class FPDI extends FPDF_TPL {
      *
      * @return string
      */
-    public function getPdfVersion()
-    {
+    public function getPdfVersion() {
 		return $this->PDFVersion;
 	}
     
@@ -142,8 +139,7 @@ class FPDI extends FPDF_TPL {
      *
      * @param string $version
      */
-    public function setPdfVersion($version = '1.3')
-    {
+    public function setPdfVersion($version = '1.3') {
         $this->PDFVersion = sprintf('%.1F', $version);
     }
 	
@@ -172,8 +168,7 @@ class FPDI extends FPDF_TPL {
      * @throws LogicException|InvalidArgumentException
      * @see getLastUsedPageBox()
      */
-    public function importPage($pageNo, $boxName = 'CropBox', $groupXObject = true)
-    {
+    public function importPage($pageNo, $boxName = 'CropBox', $groupXObject = true) {
         if ($this->_inTpl) {
             throw new LogicException('Please import the desired pages before creating a new template.');
         }
@@ -261,8 +256,7 @@ class FPDI extends FPDF_TPL {
      *
      * @return string The used boundary box: MediaBox, CropBox, BleedBox, TrimBox or ArtBox
      */
-    public function getLastUsedPageBox()
-    {
+    public function getLastUsedPageBox() {
         return $this->lastUsedPageBox;
     }
 
@@ -288,8 +282,7 @@ class FPDI extends FPDF_TPL {
      * @return array The height and width of the template (array('w' => ..., 'h' => ...))
      * @throws LogicException|InvalidArgumentException
      */
-    public function useTemplate($tplIdx, $x = null, $y = null, $w = 0, $h = 0, $adjustPageSize = false)
-    {
+    public function useTemplate($tplIdx, $x = null, $y = null, $w = 0, $h = 0, $adjustPageSize = false) {
         if ($adjustPageSize == true && is_null($x) && is_null($y)) {
             $size = $this->getTemplateSize($tplIdx, $w, $h);
             $orientation = $size['w'] > $size['h'] ? 'L' : 'P';
@@ -332,8 +325,7 @@ class FPDI extends FPDF_TPL {
     /**
      * Copy all imported objects to the resulting document.
      */
-    protected function _putimportedobjects()
-    {
+    protected function _putimportedobjects() {
         foreach($this->parsers AS $filename => $p) {
             $this->currentParser =& $p;
             if (!isset($this->_objStack[$filename]) || !is_array($this->_objStack[$filename])) {
@@ -365,8 +357,7 @@ class FPDI extends FPDF_TPL {
     /**
      * Writes the form XObjects to the PDF document.
      */
-    protected function _putformxobjects()
-    {
+    protected function _putformxobjects() {
         $filter = ($this->compress) ? '/Filter /FlateDecode ' : '';
 	    reset($this->_tpls);
         foreach($this->_tpls AS $tplIdx => $tpl) {
@@ -496,8 +487,7 @@ class FPDI extends FPDF_TPL {
      * @param bool $onlyNewObj
      * @return bool|int
      */
-    public function _newobj($objId = false, $onlyNewObj = false)
-    {
+    public function _newobj($objId = false, $onlyNewObj = false) {
         if (!$objId) {
             $objId = ++$this->n;
         }
@@ -519,8 +509,7 @@ class FPDI extends FPDF_TPL {
      *
      * @param mixed $value A PDF-Value. Structure of values see cases in this method
      */
-    protected function _writeValue(&$value)
-    {
+    protected function _writeValue(&$value) {
         if (is_subclass_of($this, 'TCPDF')) {
             parent::_prepareValue($value);
         }
@@ -620,8 +609,7 @@ class FPDI extends FPDF_TPL {
     /**
      * Modified _out() method so not each call will add a newline to the output.
      */
-    protected function _straightOut($s)
-    {
+    protected function _straightOut($s) {
         if (!is_subclass_of($this, 'TCPDF')) {
             if ($this->state == 2) {
         		$this->pages[$this->page] .= $s;
@@ -658,8 +646,7 @@ class FPDI extends FPDF_TPL {
      *
      * Overwritten to close opened parsers
      */
-    public function _enddoc()
-    {
+    public function _enddoc() {
         parent::_enddoc();
         $this->_closeParsers();
     }
@@ -669,8 +656,7 @@ class FPDI extends FPDF_TPL {
      *
      * @return boolean
      */
-    protected function _closeParsers()
-    {
+    protected function _closeParsers() {
         if ($this->state > 2) {
           	$this->cleanUp();
             return true;
@@ -682,8 +668,7 @@ class FPDI extends FPDF_TPL {
     /**
      * Removes cycled references and closes the file handles of the parser objects.
      */
-    public function cleanUp()
-    {
+    public function cleanUp() {
         while (($parser = array_pop($this->parsers)) !== null) {
             /**
              * @var fpdi_pdf_parser $parser

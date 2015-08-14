@@ -3,8 +3,8 @@ Contributors: littlepackage
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PB2CFX8H4V49L
 Tags: book, copyright, digital, ebook, ecommerce, e-commerce, file, marca de agua, pdf, plugin, property, protection, publishing, security, signature, watermark, watermarking, woocommerce
 Requires at least: 3.7
-Tested up to: 4.2.4
-Stable tag: 1.0.13
+Tested up to: 4.3
+Stable tag: 1.0.14
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -136,6 +136,10 @@ No. At this time I am unaware of a watermarking plugin for these file types.
 = 1.0.13, 2015.3.10 =
 * author domain name change
 * streamlining of FPDI process
+
+= 1.0.14, 2015.8.14 =
+* minor error fixes
+* Fixes for Wordpress 4.3
 
 == Upgrade Notice ==
 

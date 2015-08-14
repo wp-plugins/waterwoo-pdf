@@ -50,14 +50,13 @@ if ( ! class_exists( 'WWPDF_Download_Handler' ) ) :
 				$wwpdf_enabled = get_option( 'wwpdf_enable' );
 
 				$file_path = $_product->get_file_download_path( $download_data->download_id );
-
 				$file_extension = strtolower( substr( strrchr( $file_path, "." ), 1 ) );
 
 				if ( $wwpdf_enabled == "yes" && $file_extension == "pdf" ) {
 				
 					$file_req = basename( $file_path );
+					$wwpdf_files = get_option( 'wwpdf_files', '' );
 					$wwpdf_file_list = array_filter( array_map( 'trim', explode( PHP_EOL, $wwpdf_files ) ) );
-					$wwpdf_files = get_option( 'wwpdf_files' );
 					
 					// Watermark desired files only
 					if ( in_array( $file_req, $wwpdf_file_list ) || $wwpdf_files == '' ) { 
@@ -224,7 +223,6 @@ if ( ! class_exists( 'WWPDF_Download_Handler' ) ) :
 		 */
 		public static function download_file_redirect( $file_path, $filename = '' ) {
 	
-
 			$file_extension = strtolower( substr( strrchr( $file_path, "." ), 1 ) );
 			$wwpdf_enabled = get_option ( 'wwpdf_enable' );
 
@@ -233,7 +231,7 @@ if ( ! class_exists( 'WWPDF_Download_Handler' ) ) :
 			$wwpdf_file_list = array_filter( array_map( 'trim', explode( PHP_EOL, $wwpdf_files ) ) );
 	
 			// Redirect to the file... if not watermarked
-			if ( $file_download_method == "redirect" && $wwpdf_enabled != "yes" ) {
+			if ( $wwpdf_enabled != "yes" ) {
 				header( 'Location: ' . $file_path );
 				exit;
 			} else if ( ( $wwpdf_enabled == "yes" && $file_extension == "pdf" ) && ( in_array( $file_req, $wwpdf_file_list ) || $wwpdf_files == '' ) ) {
@@ -260,16 +258,16 @@ if ( ! class_exists( 'WWPDF_Download_Handler' ) ) :
 		extract( $parsed_file_path );
 
 		if ( function_exists( 'apache_get_modules' ) && in_array( 'mod_xsendfile', apache_get_modules() ) ) {
-			self::download_headers( $file_path, $filename );
-			header( "X-Sendfile: $file_path" );
+			self::download_headers( $parsed_file_path['file_path'], $filename );
+		    header( "X-Sendfile: " . $parsed_file_path['file_path'] );
 			exit;
 		} elseif ( stristr( getenv( 'SERVER_SOFTWARE' ), 'lighttpd' ) ) {
-			self::download_headers( $file_path, $filename );
-			header( "X-Lighttpd-Sendfile: $file_path" );
+			self::download_headers( $parsed_file_path['file_path'], $filename );
+		    header( "X-Lighttpd-Sendfile: " . $parsed_file_path['file_path'] );
 			exit;
 		} elseif ( stristr( getenv( 'SERVER_SOFTWARE' ), 'nginx' ) || stristr( getenv( 'SERVER_SOFTWARE' ), 'cherokee' ) ) {
-			self::download_headers( $file_path, $filename );
-			$xsendfile_path = trim( preg_replace( '`^' . str_replace( '\\', '/', getcwd() ) . '`', '', $file_path ), '/' );
+			self::download_headers( $parsed_file_path['file_path'], $filename );
+			$xsendfile_path = trim( preg_replace( '`^' . str_replace( '\\', '/', getcwd() ) . '`', '', $parsed_file_path['file_path'] ), '/' );
 			header( "X-Accel-Redirect: /$xsendfile_path" );
 			exit;
 		}
@@ -286,12 +284,10 @@ if ( ! class_exists( 'WWPDF_Download_Handler' ) ) :
 	public static function download_file_force( $file_path, $filename ) {
 		$parsed_file_path = WC_Download_Handler::parse_file_path( $file_path );
 
-		extract( $parsed_file_path );
+		self::download_headers( $parsed_file_path['file_path'], $filename );
 
-		self::download_headers( $file_path, $filename );
-
-		if ( ! WC_Download_Handler::readfile_chunked( $file_path ) ) {
-			if ( $remote_file ) {
+		if ( ! WC_Download_Handler::readfile_chunked( $parsed_file_path['file_path'] ) ) {
+			if ( $parsed_file_path['remote_file'] ) {
 				self::download_file_redirect( $file_path );
 			} else {
 				self::download_error( __( 'File not found', 'woocommerce' ) );
@@ -348,10 +344,10 @@ if ( ! class_exists( 'WWPDF_Download_Handler' ) ) :
 	 * Check and set certain server config variables to ensure downloads work as intended.
 	 */
 	private static function check_server_config() {
-		if ( ! ini_get('safe_mode') ) {
+		if ( function_exists( 'set_time_limit' ) && false === strpos( ini_get( 'disable_functions' ), 'set_time_limit' )  && ! ini_get('safe_mode') ) {
 			@set_time_limit(0);
 		}
-		if ( function_exists( 'get_magic_quotes_runtime' ) && get_magic_quotes_runtime() ) {
+		if ( function_exists( 'get_magic_quotes_runtime' ) && get_magic_quotes_runtime() && version_compare( phpversion(), '5.4', '<' ) ) {
 			@set_magic_quotes_runtime(0);
 		}
 		if ( function_exists( 'apache_setenv' ) ) {
