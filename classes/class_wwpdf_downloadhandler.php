@@ -2,9 +2,18 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-if ( ! class_exists( 'WWPDFDownloadHandler' ) ) :
+if ( ! class_exists( 'WWPDF_DownloadHandler' ) ) :
 
-	class WWPDFDownloadHandler {
+	class WWPDF_DownloadHandler {
+
+		/**
+		 * Constructor
+		 */
+		public function __construct() {
+		
+			add_action( 'init', array( $this, 'wwpdf_download_product' ) );
+						
+		}
 
 		/**
 		 * Product download, replaces download_product()
@@ -204,25 +213,14 @@ if ( ! class_exists( 'WWPDFDownloadHandler' ) ) :
 
 			if ( ( $wwpdf_enabled == "yes" ) && ( $file_extension == "pdf") ) {
 
-				$wwpdf_files = $wpdb->get_var( "SELECT option_value FROM " . $wpdb->prefix . "options WHERE option_name = 'wwpdf_files'");
+				$wwpdf_files = get_option( 'wwpdf_files' );
 
 				// get files listed by client:
 				$wwpdf_file_list = array_filter( array_map( 'trim', explode( PHP_EOL, $wwpdf_files ) ) );
 	
-				$file_req = basename($file_path);
+				$file_req = basename( $file_path );
 
-				if (in_array($file_req, $wwpdf_file_list) || ($wwpdf_files == ''))  {
-
-					/* 
-					 * Include FPDF & FPDI
-					 */
-
-					// FPDF Copyright 2011-2015 Olivier PLATHEY
-					require_once( 'fpdf/fpdf.php' );
-					// FPDI Copyright 2004-2015 Setasign - Jan Slabon
-					require_once( 'fpdi/fpdi.php' );
-					// FPDF_Protection Copyright 2014-2015 Klemen VODOPIVEC, Jan Slabon  
-					require_once( 'fpdi/fpdi_protection.php' );
+				if ( in_array( $file_req, $wwpdf_file_list) || ( $wwpdf_files == '' ) )  {
 
 					$first_name = "_billing_first_name";      
 					$watermark_first_name = $wpdb->get_row( $wpdb->prepare("
@@ -242,19 +240,43 @@ if ( ! class_exists( 'WWPDFDownloadHandler' ) ) :
 						;", $order_id, $last_name) );
 					$last_name = $watermark_last_name->meta_value;
 
-					if ( (!$first_name) || (!$last_name) || (!$email) ) {
-						wp_die( __('PDF downloads require a first name, last name, and email in the order information. If you have not provided these, contact the site owner to have them added. After they are added to your order, your instant download link will work.', 'water-woo-pdf') . ' <a href="'.home_url().'">' . __('Go to homepage &rarr;', 'water-woo-pdf') . '</a>' );
-					}
+					$phone = "_billing_phone";			
+					$watermark_phone = $wpdb->get_row( $wpdb->prepare("
+						SELECT meta_value
+						FROM ".$wpdb->prefix."postmeta
+						WHERE post_id = %s
+						AND meta_key = %s
+						;", $order_id, $phone) );
+					$phone = $watermark_phone->meta_value;
+
+					$order_paid_date = "_paid_date";			
+					$watermark_order_paid_date = $wpdb->get_row( $wpdb->prepare("
+						SELECT meta_value
+						FROM ".$wpdb->prefix."postmeta
+						WHERE post_id = %s
+						AND meta_key = %s
+						;", $order_id, $order_paid_date) );
+					$order_paid_date = $watermark_order_paid_date->meta_value;
+				
+					// change time from SQL format: 2015-01-10 13:31:12
+					$order_paid_date = date("j M Y", strtotime($order_paid_date) );
+
+					/* 
+					// Include FPDF & FPDI
+					*/
+
+					// FPDF Copyright 2011-2015 Olivier PLATHEY
+					require_once( WWPDF_PATH . 'inc/fpdf/fpdf.php' );
+					// FPDI Copyright 2004-2015 Setasign - Jan Slabon
+					require_once( WWPDF_PATH . 'inc/fpdi/fpdi.php' );
 		
-					$wwpdf_file_path = str_replace( '.pdf', '', $file_path ) . '_' . time() . '_' . $order_key . '.' . $file_extension; // customized file path
+					$wwpdf_file_path = str_replace( '.pdf', '', $file_path ) . '_' . time() . '_' . $order_key . '.' . $file_extension;
 
-					$wwpdf_footer_input = $wpdb->get_var( "SELECT option_value FROM " . $wpdb->prefix . "options WHERE option_name = 'wwpdf_footer_input'");
+					$footer_input = get_option( 'wwpdf_footer_input' );
+					$footer_input = preg_replace( array( '/\[FIRSTNAME\]/','/\[LASTNAME\]/','/\[EMAIL\]/','/\[PHONE\]/','/\[DATE\]/' ), array( $first_name, $last_name, $email, $phone, $order_paid_date ), $footer_input );
+					$footer_input = iconv( 'UTF-8', 'windows-1252', html_entity_decode( $footer_input ) );
 
-					$wwpdf_footer_input = preg_replace( array( '/\[FIRSTNAME\]/','/\[LASTNAME\]/','/\[EMAIL\]/' ), array( $first_name, $last_name, $email ), $wwpdf_footer_input );
-
-					$wwpdf_footer_input = iconv('UTF-8', 'windows-1252', html_entity_decode($wwpdf_footer_input));
-
-					WWPDFWatermark::apply_and_spit($file_path, $wwpdf_file_path, $wwpdf_footer_input);
+					WWPDFWatermark::apply_and_spit( $file_path, $wwpdf_file_path, $footer_input );
 
 				}
 

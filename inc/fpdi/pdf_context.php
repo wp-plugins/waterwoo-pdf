@@ -20,8 +20,7 @@
 /**
  * Class pdf_context
  */
-class pdf_context
-{
+class pdf_context {
     /**
      * Mode
      *
